@@ -7,10 +7,14 @@
 </head>
 <body>
 <center>
-<div id="full">
-	
-	
-</div>
+
+	<div id="full">
+		<div id="header">
+		</div>
+		<div id="menu">
+		</div>
+
+	</div>
 </center>
 </body>
 </html>
