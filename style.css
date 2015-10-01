@@ -1,6 +1,19 @@
 #full{
 	width: 1024px;
-	height: 100px;
-	border: 2px dotted black;
+	height: 800px;
+	background-image: url(img/full.jpg);
+	background-repeat: repeat-x;
 
+}
+
+#header{
+	width: 1024px;
+	height: 130px;
+	background-image: url(img/header.jpg);
+	
+}
+
+#menu{
+	width: 1024px;
+	height: 38px;
 }
