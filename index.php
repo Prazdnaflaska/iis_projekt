@@ -1,3 +1,74 @@
+<?php
+
+/*Prihlasovani*/
+	session_start();
+
+	if(isset($_SESSION['username']))
+	{
+		header('location: login.php');
+		exit();
+	}
+
+	$nalezen=false;	//pri hledani loginu a hesla
+
+	if(isset($_POST['submit']))
+	{	
+		if(!isset($_POST['username']))
+			header("location: index.php?info=Nezadali jste jméno !!!");
+
+		if(!isset($_POST['password']))
+			header("location: index.php?info=Nezadali jste heslo !!!");
+
+		$link=mysql_connect("127.0.0.1", "root", "");	//!!!Nezapomente zadat jako 3. parametr svoje heslo
+
+		if(!$link)
+		{
+			echo "Nepodarilo se pripojit k databazi";
+			exit();
+		}
+
+		$select=mysql_select_db("rezervace_letenek", $link);
+
+		if(!$select)
+		{
+			echo "Nepodarilo se vybrat databazi";
+			exit();
+		}
+
+		/*doresit tento SELECT*/
+		echo $_POST['username'];
+		$post_login=$_POST['username'];
+
+	  /*Hledani loginu*/	  
+	  $login=mysql_query("SELECT login FROM uzivatele WHERE login='$post_login'", $link);
+	  $logins=mysql_fetch_row($login);
+	 
+	  if(!empty($logins))
+	  {
+	  	/*Overeni hesla*/
+	  	$password=mysql_query("SELECT heslo FROM uzivatele WHERE login='$post_login'", $link);
+		$pass=mysql_fetch_row($password);
+		echo $pass[0];
+
+		if($_POST["password"]==$pass[0])
+		{
+			$_SESSION['username']=$post_login;
+			header("location: login.php");
+			exit();
+		}
+
+		else{
+			header("location: index.php?info=notpass");
+		}
+	  }
+
+	  else{
+	  	header("location: index.php?info=notlogin");
+	  }
+
+	}
+?>
+
 <!DOCTYPE html>
 <html>
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
@@ -25,7 +96,7 @@
 <body>
 	
 		<div id="header">
-		<h1>Rezervace letenek</h1>
+			<h1> Rezervace letenek</h1>
 		</div>
 		<div id="menu">
 		 <nav>
@@ -37,6 +108,9 @@
             </ul>
         </nav>
         </div>
+        <div id="infopanel"><br>Nejste přihlášen
+        
+         </div>
         <div id="pageField">
         	<div id="textField">
         		<div id="login">
@@ -84,7 +158,15 @@
 						<input id="password" name="password" placeholder="Heslo" type="password">
 						<input name="submit" type="submit" value=" Přihlásit ">
 						<span><?php echo $error; ?></span>
-				</form>
+					</form>
+					<?php
+						if($_GET['info']=="notlogin")
+							echo "<h3 style=\"color: red;\">Zadany login neexistuje !!!</h3>";
+						
+						if($_GET['info']=="notpass")
+							echo "<h3 style=\"color: red;\">Zadali jste nespravne heslo !!!</h3>";
+						
+					?>
         </div>
         </div>	
 </body>
