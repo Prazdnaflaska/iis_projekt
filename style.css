@@ -25,9 +25,7 @@ body{
 
 
 }
-
-
-
+ 
 
 #menu{
 	width: 100%;
@@ -42,9 +40,11 @@ body{
 h1{
 	color:white;
 	text-align: center;
+	text-decoration: none;
 	font-size: 40px;
 	padding-top: 45px;
 	font-family: 'Orbitron', sans-serif;
+	
 }
 
 
@@ -140,12 +140,12 @@ h1{
 
 
 #loginform{
-	width: 360px;
-	height: 274px;
+	width: 366px;
 	background-color: white;
 	box-shadow: 7px 7px 8px #888888;
 	float:right;
 	margin-top: 90px;
+	
 	
 }
 
@@ -410,3 +410,11 @@ font-family: 'Orbitron', sans-serif;
 	margin-left: 30px;;
 }
 
+#infopanel
+{
+	 color: #ffffff; 
+	 font-size: 15px; 
+	 float: right;
+	 margin-right: 20px;
+	 font-weight: bold;
+}
