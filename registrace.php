@@ -23,7 +23,7 @@
 
 	else{
 		/*pripojeni do databaze*/
-		$link=mysql_connect("127.0.0.1", "root", ""); //!!!Nezapomente zadat jako 3. parametr svoje heslo
+		$link=mysql_connect("127.0.0.1", "", ""); //!!!Nezapomente zadat jako 3. parametr svoje heslo
 
 		if(!$link)
 		{
@@ -124,7 +124,10 @@
             <ul class="fancyNav">
                 <li id="home"><a href="index.php">Letenky</a></li>
                 <li id="news"><a href="#news">Akce</a></li>
-              
+              	<?php 
+              			if($_SESSION['admin'])
+              				echo "<li id=\"admin\"><a href=\"admin.php\">administrace</a></li>";
+              	?>
                 <li id="services"><a href="registrace.php">Registrace</a></li>
             </ul>
         </nav>
@@ -134,6 +137,9 @@
          	if(!empty($_SESSION['username']))
          	{
          		echo "Jste přihlášen jako ". htmlspecialchars($_SESSION['username']);
+       				
+        			if($_SESSION['admin'])
+        				echo ' admin';         
          		echo "<br>";
         		echo "<a href=\"login.php?odhlasit\">Odhlásit</a>";
         	}
