@@ -1,6 +1,33 @@
 <?php
 	session_start();
 
+
+  if(!$_SESSION['admin'])
+  { 
+    echo "<meta charset=\"utf-8\">";
+    echo "<p style=\"font-size: 50px;\">nejste přihlášen jako admin !!!</p>";
+    echo "<a href=\"index.php\" style=\"font-size: 25px;\">zpět na hlavní stránku</a>";
+     exit();
+  } 
+
+  if(!isset($_SESSION['username']))
+  {
+  	header('location: login.php');
+    exit();
+  }
+
+  if($_GET['admin'])
+  {
+  		$_SESSION['admin']=true;
+  }
+
+  if(isset($_GET['odhlasit']))
+  {
+    session_destroy();
+    header('location: index.php');
+    exit();
+  }
+
 	$empty=false; //Overovani vyplneni formulare
 	$uspech=true; //Pozadavky pro registraci
 
@@ -23,7 +50,7 @@
 
 	else{
 		/*pripojeni do databaze*/
-		$link=mysql_connect("127.0.0.1", "root", "webcam"); //!!!Nezapomente zadat jako 3. parametr svoje heslo
+		$link=mysql_connect("127.0.0.1", "", ""); //!!!Nezapomente zadat jako 3. parametr svoje heslo
 
 		if(!$link)
 		{
@@ -119,8 +146,6 @@
 				document.querySelector('#main').classList.add('blur');
 				document.querySelector('#show_div').classList.remove('hidden');
 			}
-
-			
 			
 		</script>
 
@@ -145,7 +170,10 @@
                 	<input id="pass_reg" name="pass_reg" placeholder="Heslo" type="password">
                 	<input id="pass_reg2" name="pass_reg2" placeholder="Kontrla hesla" type="password">
             		<input name="submit_reg" type="submit" value=" Registrovat ">
-            	<?php 
+            	
+                </div>
+                </form>
+                	<?php 
             	 	/*Vysledek registrace, popripade chyba*/
             	 	if($_GET['correct'])
             	 		{	
@@ -156,8 +184,6 @@
             	 	else		            	 			
             	 		echo "<h3 style=\"color: red; font-weight: bold;\">".$_GET['info']."</h3>";
                 ?>
-                </div>
-                </form>
                 	<a class="material-icons" href="admin.php">cancel</a>
                 </div>	
         </div>
@@ -171,11 +197,22 @@
             		<ul class="fancyNav">
                 		<li id="home"><a href="index.php">Letenky</a></li>
                 		<li id="news"><a href="admin.php">Akce</a></li>
+                		<?php 
+              			if($_SESSION['admin'])
+              				echo "<li id=\"admin\"><a href=\"admin.php\">administrace</a></li>";
+              			?>
                 		<li id="services"><a href="registrace.php">Registrace</a></li>
             		</ul>
         		</nav>
         	</div>
-        	<div id="infopanel"><br>Nejste přihlášen
+        	<div id="infopanel"><br><br>Jste přihlášen jako <?= htmlspecialchars($_SESSION['username']) ?>
+        		<?php
+        			if($_SESSION['admin'])
+        				echo 'admin';
+
+        		?>
+        		<br>
+        		<a href="login.php?odhlasit">Odhlásit</a>
         
         	</div>
         	<div id="pageField">
@@ -208,6 +245,8 @@
         				<input type="button" name="reg_window" value="Registrace uživatele" onclick="showDiv()">
         				<input type="button" name="reg_windows" value="Vytvořit rezervaci" onclick="hello()">
         			</form>
+        			
+
         		</div>		
         	</div>
         </div> 
