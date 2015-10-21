@@ -19,7 +19,7 @@
 		if(!isset($_POST['password']))
 			header("location: index.php?info=Nezadali jste heslo !!!");
 
-		$link=mysql_connect("127.0.0.1", "root", "decathlon");	//!!!Nezapomente zadat jako 3. parametr svoje heslo
+		$link=mysql_connect("127.0.0.1", "", "");	//!!!Nezapomente zadat jako 3. parametr svoje heslo
 
 		if(!$link)
 		{
@@ -56,6 +56,7 @@
 			$admin=mysql_query("SELECT is_admin FROM uzivatele WHERE login='$post_login'", $link);
 			$is_admin=mysql_fetch_row($admin);
 			echo $is_admin[0];
+			
 			if($is_admin[0])
 				header("location: login.php?admin=1");
 			else
@@ -109,7 +110,10 @@
             <ul class="fancyNav">
                 <li id="home"><a href="index.php">Letenky</a></li>
                 <li id="news"><a href="#news">Akce</a></li>
-              
+              	<?php 
+              			if($_SESSION['admin'])
+              				echo "<li id=\"admin\"><a href=\"admin.php\">administrace</a></li>";
+              	?>
                 <li id="services"><a href="registrace.php">Registrace</a></li>
             </ul>
         </nav>
