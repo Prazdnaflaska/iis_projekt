@@ -2,8 +2,13 @@
   session_start();
   if(!isset($_SESSION['username']))
   {
-    header('location: index.php');
+  	header('location: login.php');
     exit();
+  }
+
+  if($_GET['admin'])
+  {
+  		$_SESSION['admin']=true;
   }
 
   if(isset($_GET['odhlasit']))
@@ -12,6 +17,7 @@
     header('location: index.php');
     exit();
   }
+
 ?>
 
 <!DOCTYPE html>
@@ -48,13 +54,21 @@
             <ul class="fancyNav">
                 <li id="home"><a href="index.php">Letenky</a></li>
                 <li id="news"><a href="#news">Akce</a></li>
-              
+              	<?php 
+              			if($_SESSION['admin'])
+              				echo "<li id=\"admin\"><a href=\"admin.php\">administrace</a></li>";
+              	?>
                 <li id="services"><a href="registrace.php">Registrace</a></li>
             </ul>
         </nav>
         </div>
 
         <div id="infopanel"><br>Jste přihlášen jako <?= htmlspecialchars($_SESSION['username']) ?>
+        		<?php
+        			if($_SESSION['admin'])
+        				echo 'admin';
+
+        		?>
         <br>
         <a href="login.php?odhlasit">Odhlásit</a>
          </div>
