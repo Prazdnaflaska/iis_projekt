@@ -116,7 +116,7 @@ h1{
 
 #pageField{
 
-	width: 1000px;	
+	width: 1100px;	
 
 	margin: auto;
 	
@@ -136,13 +136,28 @@ h1{
 }
 
 
+
+#textField_login{
+
+	background-color: #ffffff;
+	width: 550px;
+	box-shadow: 7px 7px 8px #888888;
+	margin: auto;
+	margin-top: 90px;
+	
+	margin-bottom: 50px;
+
+}
+
+
 #textField_users{
 
 	background-color: #ffffff;
-	width: 800px;
+	width: 900px;
 	box-shadow: 7px 7px 8px #888888;
-	margin-top: 90px;
 	float:left;
+	margin-top: 90px;
+	
 	margin-bottom: 50px;
 }
 
@@ -429,11 +444,11 @@ font-family: 'Orbitron', sans-serif;
 
 #infopanel
 {
-	 color: #ffffff; 
-	 font-size: 15px; 
-	 float: right;
-	 margin-right: 20px;
-	 font-weight: bold;
+	color: #ffffff; 
+	font-size: 15px; 
+	float:right;
+	font-weight: bold;
+	margin-right: 90px;
 }
 
 
@@ -446,25 +461,43 @@ margin-bottom: 25px;
 
 }
 
-table{
+
+
+table.edit_menu td{
+	
+	
+
+}
+
+table.data{
 	border-collapse: collapse;
 	margin: auto;
 	margin-bottom: 50px;
-	
 }
 
-table, td, th {
+
+table.data tr:nth-child(even){
+	 background-color:#eee; 
+}
+
+table.data td, th {
     border: 1px solid #ccc;
     padding: 4px;
 }
 
-#tlacitko{
-	background-color: white;
-	width: 170px;
-	height: 50px;
-	float: left;
-	margin-top: 90px;
-	margin-left: 50px;
+tr.head td{
+	border: 1px solid black;
+	color: #ffffff;
+	background-color: #00A3D5;
+}
+
+div#tlacitko{
+	
+	
+	float:right;
+	margin-top: 87px;
+	
+	
 }
 
 #admin_menu,a{
@@ -480,7 +513,7 @@ table, td, th {
 }
 
 input[name=reg_window]{
-
+width: 100%;
 background-color:#FFBC00;
 color:#fff;
 border:2px solid #FFCB00;
@@ -492,6 +525,7 @@ margin-bottom: 4px;
 }
 input[name=reg_windows]{
 
+width: 100%;
 background-color:#FFBC00;
 color:#fff;
 border:2px solid #FFCB00;
