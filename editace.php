@@ -65,6 +65,24 @@
  					$i++;
  			}
 
+ 		/*Zacatek Admin checkbox*/
+ 			$admin = $_POST['admin'];
+ 		 	
+ 		 	for($j=0; $j<$i; $j++)
+ 		 	{
+ 		 		if(isset($admin[$j]))
+ 		 		{
+ 		 			$admin[$j]=1;
+ 		 		}
+
+ 		 		else{
+ 		 			$admin[$j]=0;
+ 		 		}
+ 		 	}
+ 		 	
+ 		 	echo $admin[$submit_id];
+ 		 /*Konec Admin checkbox*/
+
  				$i=0;
  		foreach ($_POST['login'] as $key)
  			{		
@@ -79,8 +97,8 @@
 			mysql_query("UPDATE uzivatele SET adresa='$adresa[$submit_id]' WHERE login='$login[$submit_id]'", $link);
 			mysql_query("UPDATE uzivatele SET email='$email[$submit_id]' WHERE login='$login[$submit_id]'", $link);
 			mysql_query("UPDATE uzivatele SET telefon='$telefon[$submit_id]' WHERE login='$login[$submit_id]'", $link);			
+			mysql_query("UPDATE uzivatele SET is_admin='$admin[$submit_id]' WHERE login='$login[$submit_id]'", $link);						
 		
-
 			header('location: admin.php?stav=Upraveno!');
 		}
 		/*Konec upravovani*/
@@ -105,7 +123,6 @@
 			header('location: admin.php?stav=Smazáno!');
  		}
 		/*Konec mazani*/
-
 		
 	}	
 
