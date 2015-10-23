@@ -1,33 +1,33 @@
 <?php
+
 /*Prihlasovani*/
 	session_start();
+
+	require_once('editace.php');
+
 	if(isset($_SESSION['username']))
 	{
 		header('location: login.php');
 		exit();
 	}
+
 	$nalezen=false;	//pri hledani loginu a hesla
+
 	if(isset($_POST['submit']))
 	{	
 		if(!isset($_POST['username']))
 			header("location: index.php?info=Nezadali jste jméno !!!");
+
 		if(!isset($_POST['password']))
 			header("location: index.php?info=Nezadali jste heslo !!!");
-		$link=mysql_connect("127.0.0.1", "root", "webcam");	//!!!Nezapomente zadat jako 3. parametr svoje heslo
-		if(!$link)
-		{
-			echo "Nepodarilo se pripojit k databazi";
-			exit();
-		}
-		$select=mysql_select_db("rezervace_letenek", $link);
-		if(!$select)
-		{
-			echo "Nepodarilo se vybrat databazi";
-			exit();
-		}
+
+		/*Pripojeni databaze*/
+		$link=getConnectDb();
+
 		/*doresit tento SELECT*/
 		echo $_POST['username'];
 		$post_login=$_POST['username'];
+
 	  /*Hledani loginu*/	  
 	  $login=mysql_query("SELECT login FROM uzivatele WHERE login='$post_login'", $link);
 	  $logins=mysql_fetch_row($login);
@@ -38,6 +38,7 @@
 	  	$password=mysql_query("SELECT heslo FROM uzivatele WHERE login='$post_login'", $link);
 		$pass=mysql_fetch_row($password);
 		echo $pass[0];
+
 		if($_POST["password"]==$pass[0])
 		{
 			$_SESSION['username']=$post_login;
@@ -51,13 +52,16 @@
 				header("location: login.php?admin=0");
 			exit();
 		}
+
 		else{
 			header("location: index.php?info=notpass");
 		}
 	  }
+
 	  else{
 	  	header("location: index.php?info=notlogin");
 	  }
+
 	}
 ?>
 
@@ -97,7 +101,7 @@
                 <li id="news"><a href="#news">Akce</a></li>
               	<?php 
               			if($_SESSION['admin'])
-              				echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
+              				echo "<li id=\"admin\"><a href=\"admin.php\">administrace</a></li>";
               	?>
                 <li id="services"><a href="registrace.php">Registrace</a></li>
             </ul>
