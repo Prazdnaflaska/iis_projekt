@@ -139,10 +139,11 @@ h1{
 
 	background-color: #ffffff;
 	width: auto;
+	padding: 10px;	
 	box-shadow: 7px 7px 8px #888888;
 	margin-top: 90px;
 	float: left;
-	margin-left: -150px;
+	margin-left: -170px;
 	margin-bottom: 50px;
 }
 
