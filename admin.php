@@ -201,7 +201,7 @@
        					<?php 
        						mysql_connect("127.0.0.1","root","decathlon");
        						mysql_select_db("rezervace_letenek");
-       						$result=mysql_query("SELECT jmeno, prijmeni, adresa, email, telefon, login FROM uzivatele");
+       						$result=mysql_query("SELECT jmeno, prijmeni, adresa, email, telefon, login, is_admin FROM uzivatele");
 							$x=0;
 							$y=0;
 							while($row = mysql_fetch_row($result))
@@ -212,6 +212,16 @@
     								echo "<td><input name=\"adresa[$y]\" type=\"text\" value=\"$row[2]\"> </td>";
     								echo "<td><input name=\"email[$y]\" type=\"text\" value=\"$row[3]\"></td>";
     								echo "<td><input name=\"telefon[$y]\" type=\"text\" value=\"$row[4]\"> </td>";
+									/*checkbox zaskrtavani*/
+									if($row[6])
+									{
+    									echo "<td><input name=\"admin[$y]\" type=\"checkbox\" value=\"$row[6]\" checked>admin</td>";
+    								}
+    								else
+    								{
+    									echo "<td><input name=\"admin[$y]\" type=\"checkbox\" value=\"$row[6]\">admin</td>";	
+    								}
+
     								echo "<td><input name=\"login[$y]\" type=\"hidden\" value=\"$row[5]\"> </td>";
     								echo "<td><input type=\"submit\" value=\"Upravit\" name=\"submit[$x]\"></td>";
     								echo "<td><input type=\"submit\" value=\"Odstranit\" name=\"delete[$x]\"></td><br>";
