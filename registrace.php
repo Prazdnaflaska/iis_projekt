@@ -1,8 +1,11 @@
-
 <?php
 	session_start();
+
+	require_once('editace.php');
+
 	$empty=false; //Overovani vyplneni formulare
 	$uspech=true; //Pozadavky pro registraci
+
  if(!empty($_POST))
  {
 	foreach ($_POST as $argument) 
@@ -13,27 +16,19 @@
 			break;
 		}	
 	}
+
 	if($empty)
 	{	
 		header("location: registrace.php?info=Vyplňte prosím všechny údaje !!!");
 		$uspech=false;
 	}
+
 	else{
 		/*pripojeni do databaze*/
-		$link=mysql_connect("127.0.0.1", "root", "webcam"); //!!!Nezapomente zadat jako 3. parametr svoje heslo
-		if(!$link)
-		{
-			echo "Chyba spojeni s databazi";
-			exit(1);
-		}
-		/*Vyber databaze*/
-		$select=mysql_select_db("rezervace_letenek", $link);
-		if(!$select)
-		{
-			echo "Neni mozne vybrat databazi";
-			exit(1);
-		}
+		$link=getConnectDb();
+
 		$jmena=mysql_query("SELECT login FROM uzivatele", $link);
+
 		/*Kontrola, zda zadany login existuje*/
 	  while ($Kontrola_loginu=mysql_fetch_row($jmena))
 	  {
@@ -54,12 +49,14 @@
 			header("location: registrace.php?info=hesla se neshodují !!!");
 			$uspech=false;
 		}
+
 		/*delka hesla, alespon 8 znaku*/
 		else if((strlen($_POST["pass_reg"])<=8) && $uspech)
 		{
 			header("location: registrace.php?info=Heslo je příliš krátké, musí obsahovat alespoň 8 znaků !!!");
 			$uspech=false;
 		}
+
 		/*Pokud vsechny udaje byly spravne, uloz do databaze*/
 		if($uspech)
 		{	
@@ -71,6 +68,7 @@
 				header("location: registrace.php?info=Registrace proběhla úspěšně & correct=true");
 				exit();
 			}
+
 			else{
 				echo "nepodarilo se vas vlozit do databaze, zkuste to prosim znovu";
 			}
@@ -115,7 +113,7 @@
                 <li id="news"><a href="#news">Akce</a></li>
               	<?php 
               			if($_SESSION['admin'])
-              				echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
+              				echo "<li id=\"admin\"><a href=\"admin.php\">administrace</a></li>";
               	?>
                 <li id="services"><a href="registrace.php">Registrace</a></li>
             </ul>
@@ -166,6 +164,7 @@
             	 		echo "<h3 style=\"color: green; font-weight: bold;\">".$_GET['info']."</h3>";
             	 		echo "<a href=\"index.php\" style=\"font-size: 20px; color: blue;\">Přejít na hlavní stránku</a>";
             	  	}
+
             	 	else		            	 			
             	 		echo "<h3 style=\"color: red; font-weight: bold;\">".$_GET['info']."</h3>";
                 ?>
