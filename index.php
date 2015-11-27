@@ -1,8 +1,6 @@
-<?php
-
+	<?php
 /*Prihlasovani*/
 	session_start();
-
 	require_once('editace.php');
 
 	if(isset($_SESSION['username']))
@@ -10,24 +8,28 @@
 		header('location: login.php');
 		exit();
 	}
-
 	$nalezen=false;	//pri hledani loginu a hesla
-
 	if(isset($_POST['submit']))
 	{	
 		if(!isset($_POST['username']))
 			header("location: index.php?info=Nezadali jste jméno !!!");
-
 		if(!isset($_POST['password']))
 			header("location: index.php?info=Nezadali jste heslo !!!");
-
-		/*Pripojeni databaze*/
 		$link=getConnectDb();
-
+		if(!$link)
+		{
+			echo "Nepodarilo se pripojit k databazi";
+			exit();
+		}
+		$select=mysql_select_db("rezervace_letenek", $link);
+		if(!$select)
+		{
+			echo "Nepodarilo se vybrat databazi";
+			exit();
+		}
 		/*doresit tento SELECT*/
 		echo $_POST['username'];
 		$post_login=$_POST['username'];
-
 	  /*Hledani loginu*/	  
 	  $login=mysql_query("SELECT login FROM uzivatele WHERE login='$post_login'", $link);
 	  $logins=mysql_fetch_row($login);
@@ -38,7 +40,6 @@
 	  	$password=mysql_query("SELECT heslo FROM uzivatele WHERE login='$post_login'", $link);
 		$pass=mysql_fetch_row($password);
 		echo $pass[0];
-
 		if($_POST["password"]==$pass[0])
 		{
 			$_SESSION['username']=$post_login;
@@ -52,16 +53,13 @@
 				header("location: login.php?admin=0");
 			exit();
 		}
-
 		else{
 			header("location: index.php?info=notpass");
 		}
 	  }
-
 	  else{
 	  	header("location: index.php?info=notlogin");
 	  }
-
 	}
 ?>
 
@@ -101,50 +99,83 @@
                 <li id="news"><a href="#news">Akce</a></li>
               	<?php 
               			if($_SESSION['admin'])
-              				echo "<li id=\"admin\"><a href=\"admin.php\">administrace</a></li>";
+              				echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
+              			else
+              				echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
               	?>
                 <li id="services"><a href="registrace.php">Registrace</a></li>
             </ul>
         </nav>
         </div>
-        <div id="infopanel"><br>Nejste přihlášen
+        
+        <div id="pageField">
+        <div class="infopanel" id="index">
+        	<br>Nejste přihlášen
         
          </div>
-        <div id="pageField">
-        	<div id="textField">
+        	<div class="textField" id="rezervace">
         		<div id="login">
        				<h2>Rezervace letenek</h2>
        			</div>
-       				<form action="" method="post">
-       					<div id="typLetenky">
-       						<label>Typ letenky</label>
-       						<input type="radio" name="typ" value="" checked>Zpáteční
-       						<input type="radio" name="typ" value="" >Jednosměrná
-       						
-       					</div>
-       					<div id="typLetenky">
-       						<label>Odlet z</label>
-       						<input id="letenka" name="odlet" type="text"><br>
-       						<label>Přílet do</label>
-       						<input id="letenka" name="prilet" type="text"><br>
-       						<label>Datum</label>
-       						<input id="datepicker" name="date" placeholder="Datum od" type="text">
-       						<label for="pomlcka">-</label>
-       						<input id="datepicker2" name="date2" placeholder="Datum do" type="text">
-       						</div>
-       						<div id="typLetenky">
-       							<label for="tridas">Třída</label>
-       							<input type="radio" name="trida" value="" checked>First
-       							<input type="radio" name="trida" value="" >Bussines
-       							<input type="radio" name="trida" value="" >Economy
-       							<input name="hledej" type="submit" value="Vyhledat">
+       				<form action="rez_vyhled.php" method="post">
+                <div id="typLetenky">
+                  <label>Typ letenky</label>
+                  <input type="radio" name="typ" value="" checked>Zpáteční
+                  <input type="radio" name="typ" value="" >Jednosměrná
+                  
+                </div>
+                <div id="typLetenky">
+                  <label>Odlet z</label>
+                  <input id="letenka" name="odlet" type="text"><br>
+                  <label>Přílet do</label>
+                  <input id="letenka" name="prilet" type="text"><br>
+                  <label>Datum</label>
+                  <input id="datepicker" name="date" placeholder="Datum od" type="text">
+                  <label for="pomlcka">-</label>
+                  <input id="datepicker2" name="date2" placeholder="Datum do" type="text">
+                  </div>
+                  <div id="typLetenky">
+                    <label for="tridas">Třída</label>
+                    
+                    <input type="radio" name="class" value="first" class="radio" <?php if (isset($_POST['class']) && $_POST['class'] == 'first'): ?>checked='checked'<?php endif; ?> /> First
+                    <input type="radio" name="class" value="business"  class="radio" <?php if (isset($_POST['class']) && $_POST['class'] ==  'business'): ?>checked='checked'<?php endif; ?> /> Business
+                    <input type="radio" name="class" value="economy"  class="radio" <?php if (isset($_POST['class']) && $_POST['class'] ==  'economy'): ?>checked='checked'<?php endif; ?> /> Economy
+                   
+                    <input name="hledej" type="submit" value="Vyhledat">
 
-       					</div>
+                </div>
+
+                 <?php
+
+                  if(isset($_GET['notice']))
+                  {
+
+                    switch ($_GET['notice']) {
+                      case "mistoOdletu":
+                        echo "<h3 style=\"color: red;\">Zadejte misto odletu !!!</h3>";
+                        break;
+                      case "neplaModl":
+                          echo "<h3 style=\"color: red;\">Misto odletu nenalezeno !!!</h3>";
+                          break;
+                      case "neplaDest":
+                          echo "<h3 style=\"color: red;\">Destinace nebyla nalezena !!!</h3>";
+                          break;  
+                      case 'dateNon':                      
+                        echo "<h3 style=\"color: red;\">Zadny let v tomto datu !!!</h3>"; 
+                        break;
+                      
+                      default:
+                        echo "<h3 style=\"color: red;\">Zkontrolujte zda jste spravne vyplnili formular !!!</h3>";
+                        
+                        break;
+                    }
+                    
+                  }
+                ?>
 
 
-
-       					<span><?php echo $error; ?></span>
-       				</form>
+                <span><?php echo $error; ?></span>
+              </form>
        			
 
         	</div>
