@@ -1,11 +1,9 @@
+
 <?php
 	session_start();
-
-	require_once('editace.php');
-
+	require_once("editace.php");
 	$empty=false; //Overovani vyplneni formulare
 	$uspech=true; //Pozadavky pro registraci
-
  if(!empty($_POST))
  {
 	foreach ($_POST as $argument) 
@@ -16,19 +14,27 @@
 			break;
 		}	
 	}
-
 	if($empty)
 	{	
 		header("location: registrace.php?info=Vyplňte prosím všechny údaje !!!");
 		$uspech=false;
 	}
-
 	else{
 		/*pripojeni do databaze*/
 		$link=getConnectDb();
-
+		if(!$link)
+		{
+			echo "Chyba spojeni s databazi";
+			exit(1);
+		}
+		/*Vyber databaze*/
+		$select=mysql_select_db("rezervace_letenek", $link);
+		if(!$select)
+		{
+			echo "Neni mozne vybrat databazi";
+			exit(1);
+		}
 		$jmena=mysql_query("SELECT login FROM uzivatele", $link);
-
 		/*Kontrola, zda zadany login existuje*/
 	  while ($Kontrola_loginu=mysql_fetch_row($jmena))
 	  {
@@ -49,14 +55,12 @@
 			header("location: registrace.php?info=hesla se neshodují !!!");
 			$uspech=false;
 		}
-
 		/*delka hesla, alespon 8 znaku*/
 		else if((strlen($_POST["pass_reg"])<=8) && $uspech)
 		{
 			header("location: registrace.php?info=Heslo je příliš krátké, musí obsahovat alespoň 8 znaků !!!");
 			$uspech=false;
 		}
-
 		/*Pokud vsechny udaje byly spravne, uloz do databaze*/
 		if($uspech)
 		{	
@@ -68,7 +72,6 @@
 				header("location: registrace.php?info=Registrace proběhla úspěšně & correct=true");
 				exit();
 			}
-
 			else{
 				echo "nepodarilo se vas vlozit do databaze, zkuste to prosim znovu";
 			}
@@ -113,33 +116,37 @@
                 <li id="news"><a href="#news">Akce</a></li>
               	<?php 
               			if($_SESSION['admin'])
-              				echo "<li id=\"admin\"><a href=\"admin.php\">administrace</a></li>";
+              				echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
+                    else
+                      echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
               	?>
                 <li id="services"><a href="registrace.php">Registrace</a></li>
             </ul>
         </nav>
         </div>
-         <div id="infopanel"><br>
-         <?php
-         	if(!empty($_SESSION['username']))
-         	{
-         		echo "Jste přihlášen jako ". htmlspecialchars($_SESSION['username']);
-       				
-        			if($_SESSION['admin'])
-        				echo ' admin';         
-         		echo "<br>";
-        		echo "<a href=\"login.php?odhlasit\">Odhlásit</a>";
-        	}
-         	else
-         		echo "Nejste přihlášen";
-         ?>
-         </div>
+        
         <div id="pageField">
-            <div id="reg_form">
-                <div id="login">
-                    <h2>Registrace</h2>
-                </div>
-                <div id="jmeno_prij">
+          <div class="infopanel" id="reg2"><br>
+              <?php
+                    if(!empty($_SESSION['username']))
+                        {
+                          echo "Jste přihlášen jako ". htmlspecialchars($_SESSION['username']);
+              
+                          if($_SESSION['admin'])
+                              echo ' admin';         
+                          echo "<br>";
+                          echo "<a href=\"login.php?odhlasit\">Odhlásit</a>";
+                        }
+                    else
+                      echo "Nejste přihlášen";
+              ?>
+          </div>
+
+          <div id="reg_form">
+            <div id="login">
+              <h2>Registrace</h2>
+            </div>
+            <div id="jmeno_prij">
                 
                 <form method="post">
                 <input id="jmeno" name="jmeno" placeholder="Jméno" type="text">
@@ -148,15 +155,14 @@
                  <input id="tel" name="tel" placeholder="Telefon" type="text">
 
                 <input id="mail" name="mail" placeholder="E-mail" type="text">
-                </div>
-                <div id="jmeno_prij">
+            </div>
+            <div id="jmeno_prij">
                 <input id="pass_reg" name="pass_reg" placeholder="Heslo" type="password">
                 <input id="pass_reg2" name="pass_reg2" placeholder="Kontrla hesla" type="password">
 
 
-            <input name="submit_reg" type="submit" value=" Registrovat ">
-
-            </form>
+                <input name="submit_reg" type="submit" value=" Registrovat ">
+            
             	 <?php 
             	 	/*Vysledek registrace, popripade chyba*/
             	 	if($_GET['correct'])
@@ -164,15 +170,36 @@
             	 		echo "<h3 style=\"color: green; font-weight: bold;\">".$_GET['info']."</h3>";
             	 		echo "<a href=\"index.php\" style=\"font-size: 20px; color: blue;\">Přejít na hlavní stránku</a>";
             	  	}
-
             	 	else		            	 			
             	 		echo "<h3 style=\"color: red; font-weight: bold;\">".$_GET['info']."</h3>";
                 ?>
-                </div>
-                
-
             </div>
+            </div>
+
+            <?php  if($_SESSION['admin']) 
+            {
+              echo"<div id=\"tlacitko\"  class=\"reg1\">
+                <form method=\"post\">
+                <table class=\"edit_menu\">
+                
+                  <tr><td><input type=\"button\" name=\"reg_window\" value=\"Administrace\" onclick=\"location.href='admin.php'\"></td></tr>
+               
+                  <tr><td><input type=\"button\" name=\"reg_windows\" value=\"Vytvořit let\" onclick=\"location.href='let.php'\"></td></tr>
+                  <tr><td><input type=\"button\" name=\"reg_windows\" value=\"Přidat společnost\" onclick=\"hello()\"></td></tr>
+                  
+                  
+                  
+                  </table>
+                </form>
+              </div>";
+              }
+              ?>
+                
+            
+      
         </div>
+ 
 
 </body>
 </html>
+
