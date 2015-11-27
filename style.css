@@ -116,63 +116,50 @@ h1{
 
 #pageField{
 
-	width: 1000px;	
+	width: 1100px;	
 	margin: auto;
+
 	
 }
 
 
 
-#textField{
+div.textField{
 
 	background-color: #ffffff;
-	width: 550px;
 	box-shadow: 7px 7px 8px #888888;
-	margin-top: 90px;
+	margin-top: 110px;
 	float:left;
-	margin-bottom: 50px;
-
-}
-
-
-#textField_users{
-
-	background-color: #ffffff;
-	width: auto;
-	padding: 10px;	
-	box-shadow: 7px 7px 8px #888888;
-	margin-top: 90px;
-	float: left;
-	margin-left: -170px;
-	margin-bottom: 50px;
-}
-
-
-
-
-
-
-#loginform{
-	width: 366px;
-	background-color: white;
-	box-shadow: 7px 7px 8px #888888;
-	float:right;
-	margin-top: 90px;
 	
-	
+
 }
 
+div#rezervace{
 
-#reg_form{
-	width: 450px;	
+width: 550px;
+
+}
+
+div#rezervace_lt{
+	margin-left: 290px;
+	width: 550px;
+}
+
+div#login_pg{
 	background-color: #ffffff;
 	box-shadow: 7px 7px 8px #888888;
-	margin: auto;
-	margin-top: 90px;
+	margin:auto;
+	margin-top: 110px;
 	margin-bottom: 50px;
-
-
+	width: 550px;
 }
+
+div#users{
+
+	width: 900px;
+}
+
+
 
 #windov{
 	max-width: 450px;	
@@ -203,7 +190,6 @@ input[name=typ]{
 }
 
 
-
 #typLetenky{
 	
 	font-family: 'Titillium Web', sans-serif;
@@ -229,6 +215,55 @@ width:40%;
 padding:10px;
 margin-top:8px;
 margin-left: 95px;
+border:1px solid #ccc;
+padding-left:5px;
+font-size:15px;
+font-family: 'Titillium Web', sans-serif;
+background-color: #F0F0F0;
+}
+
+input[name=kapacita]{
+width:40%;
+padding:10px;
+margin-top:8px;
+margin-left: 79px;
+border:1px solid #ccc;
+padding-left:5px;
+font-size:15px;
+font-family: 'Titillium Web', sans-serif;
+background-color: #F0F0F0;
+}
+
+input[name=spolecnost]{
+width:40%;
+padding:10px;
+margin-top:8px;
+margin-left: 58px;
+border:1px solid #ccc;
+padding-left:5px;
+font-size:15px;
+font-family: 'Titillium Web', sans-serif;
+background-color: #F0F0F0;
+}
+
+
+input[name=e_mail]{
+width:40%;
+padding:10px;
+margin-top:8px;
+margin-left: 18px;
+border:1px solid #ccc;
+padding-left:5px;
+font-size:15px;
+font-family: 'Titillium Web', sans-serif;
+background-color: #F0F0F0;
+}
+
+input[name=pocet_osob]{
+width:40%;
+padding:10px;
+margin-top:8px;
+margin-left: 60px;
 border:1px solid #ccc;
 padding-left:5px;
 font-size:15px;
@@ -303,6 +338,37 @@ margin-left: 260px;
 font-family: 'Orbitron', sans-serif;
 }
 
+input[name=rezervuj] {
+width:43%;
+background-color:#FFBC00;
+color:#fff;
+border:2px solid #FFCB00;
+padding:10px;
+font-size:20px;
+cursor:pointer;
+margin-bottom:40px;
+margin-top: 8px;
+margin-left: 260px;
+font-family: 'Orbitron', sans-serif;
+}
+
+input[name=rez_vyhled_bt] {
+margin: auto;
+margin-bottom:40px;
+margin-top: 8px;
+margin-left: 320px;
+width:43%;
+background-color:#FFBC00;
+color:#fff;
+border:2px solid #FFCB00;
+padding:10px;
+font-size:20px;
+cursor:pointer;
+
+
+font-family: 'Orbitron', sans-serif;
+}
+
 input[name=username],input[name=password] {
 width:75%;
 padding:10px;
@@ -330,6 +396,8 @@ font-family: 'Orbitron', sans-serif;
 }
 
 
+
+
 input[name=jmeno]{
 width:40%;
 border:1px solid #ccc;
@@ -340,6 +408,7 @@ padding:10px;
 float: left;
 margin-top: 8px;
 }
+
 
 
 input[name=prijmeni]{
@@ -412,7 +481,7 @@ margin-left: 10px;
 
 
 input[name=submit_reg] {
-width:87%;
+width:93%;
 background-color:#FFBC00;
 color:#fff;
 border:2px solid #FFCB00;
@@ -425,17 +494,126 @@ margin-left: 0px;
 font-family: 'Orbitron', sans-serif;
 }
 
+
+input[name=submit_platba] {
+width:21.5%;
+background-color:#FFBC00;
+color:#fff;
+border:2px solid #FFCB00;
+padding:10px;
+font-size:20px;
+cursor:pointer;
+margin-left: 187px;
+padding-top: 12px;
+font-family: 'Orbitron', sans-serif;
+}
+
+
+input[name=cancel] {
+width:21.5%;
+background-color:#FFBC00;
+color:#fff;
+border:2px solid #FFCB00;
+padding:10px;
+font-size:20px;
+cursor:pointer;
+margin-bottom:50px;
+margin-top: 8px;
+font-family: 'Orbitron', sans-serif;
+}
+
+
+
 #jmeno_prij{
 	margin-left: 30px;;
 }
 
-#infopanel
+div#platba{
+	margin: auto;
+	margin-left: 5px;
+}
+
+
+input[name=platba_text]{
+width:39.5%;
+border:1px solid #ccc;
+font-size:12px;
+font-family: 'Orbitron', sans-serif;
+background-color: #F0F0F0;
+padding:10px;
+margin-top: 8px;
+}
+
+div.infopanel
 {
-	 color: #ffffff; 
-	 font-size: 15px; 
-	 float: right;
-	 margin-right: 20px;
-	 font-weight: bold;
+	color: #ffffff; 
+	font-size: 15px; 
+	float:right;
+	font-weight: bold;
+	
+}
+
+div#admin{
+	margin-right: -35px;
+}
+
+div#reg2{
+	margin-top: 15px;
+	margin-right: 65px;
+	
+}
+
+div#rez{
+
+	margin-right: 35px;
+
+}
+
+div#rez2{
+	margin-top: -85px;
+	margin-right: 35px;
+
+}
+
+
+div#rez_vh{
+	margin-top: -80px;
+	margin-right: -170px;
+}
+
+div#rez_vyhled{
+	background-color: #ffffff;
+	box-shadow: 7px 7px 8px #888888;
+
+	margin:auto;
+	margin-top: 110px;
+	margin-bottom: 50px;
+
+}
+
+div#platba_div{
+	background-color: #ffffff;
+	box-shadow: 7px 7px 8px #888888;
+
+	margin:auto;
+	margin-top: 110px;
+	margin-bottom: 50px;
+	width: 550px;
+
+}
+
+div#index{
+margin-top: 15px;
+margin-right: -150px;
+}
+
+#loginform{
+	width: 366px;
+	background-color: white;
+	box-shadow: 7px 7px 8px #888888;
+	float:right;
+	margin-top: 110px;
+	
 }
 
 
@@ -448,25 +626,74 @@ margin-bottom: 25px;
 
 }
 
-table{
+
+
+table.data{
 	border-collapse: collapse;
 	margin: auto;
 	margin-bottom: 50px;
-	
 }
 
-table, td, th {
+
+table.data tr:nth-child(even){
+	 background-color:#eee; 
+}
+
+table.data td, th {
     border: 1px solid #ccc;
     padding: 4px;
 }
 
-#tlacitko{
-	background-color: white;
-	width: 170px;
-	height: 50px;
-	float: left;
-	margin-top: 90px;
-	margin-left: 50px;
+tr.head td{
+	border: 1px solid black;
+	color: #ffffff;
+	background-color: #00A3D5;
+}
+
+div#tlacitko{
+	float:right;	
+}
+
+div#tlacitko.admin{
+	
+	margin-top: 38px;
+
+	
+}
+
+
+div#tlacitko_rez{
+	float:right;	
+	margin-top: 106px;
+	margin-right: -150px;
+}
+
+div#tlacitko_let{
+	float:right;	
+	margin-top: -504px;
+	margin-right: 72px;
+}
+
+
+#reg_form{
+	width: 450px;	
+	background-color: #ffffff;
+	box-shadow: 7px 7px 8px #888888;
+	float:left;
+	margin-top: 110px;
+	margin-left: 350px;
+
+
+
+}
+
+div#tlacitko.reg1{
+	
+	margin-top: 45px;
+	margin-right: 115px;
+
+
+	
 }
 
 #admin_menu,a{
@@ -482,7 +709,7 @@ table, td, th {
 }
 
 input[name=reg_window]{
-
+width: 100%;
 background-color:#FFBC00;
 color:#fff;
 border:2px solid #FFCB00;
@@ -494,6 +721,7 @@ margin-bottom: 4px;
 }
 input[name=reg_windows]{
 
+width: 100%;
 background-color:#FFBC00;
 color:#fff;
 border:2px solid #FFCB00;
@@ -504,77 +732,8 @@ font-family: 'Titillium Web', sans-serif;
 margin-bottom: 4px;
 }
 
-
-
-div#main {
-
-  		
-    background-size:cover;
-
-}
-div#main.blur {
-	
-
-    -webkit-filter: blur(4px);
-    -moz-filter: blur(4px);
-    -ms-filter: blur(4px);
-    -o-filter: blur(4px);
-    filter: blur(4px);
-
-
-
+.adminace{
+	font-size: 14px;
+	width: 100px;
 }
 
-
-div#show_div.hidden {
-	display: none;
-}
-
-div#show_div{
-	width: 500px;
-	height: 450px;
-	background-color: white;
-	position: absolute;
-	left: 440px;
-	top:240px;
-	z-index: 99;  
-	border: 2px solid #00A3D5;
-}
-
-
-.material-icons {
-	margin-left: 220px;
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 54px;  /* Preferred icon size */
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
-  color: grey;
-
-  /* Support for all WebKit browsers. */
-  -webkit-font-smoothing: antialiased;
-  /* Support for Safari and Chrome. */
-  text-rendering: optimizeLegibility;
-
-  /* Support for Firefox. */
-  -moz-osx-font-smoothing: grayscale;
-
-  /* Support for IE. */
-  font-feature-settings: 'liga';
-    transition-property:color,font-size;
-        transition-duration: 0.2s;
-}
-
-
-.material-icons:hover{
-	color: red;
-	font-size: 64px;
-}
