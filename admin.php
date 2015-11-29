@@ -1,6 +1,31 @@
 <?php
 	session_start();
   require_once("editace.php");
+
+  /*zruseni rezervaci*/
+  if(isset($_POST['zrusitadmin']))
+  {
+    $link=getConnectDb();
+    $id_rezervace=$_POST['id_rezervace'];
+    
+    $zrusit=$_POST['zrusitadmin'];
+    $submit_id=array_keys($zrusit);
+    $submit_id=$submit_id[0];
+    $zrusit=$id_rezervace[$submit_id];
+
+    
+    $result=mysql_query("SELECT id_letenky FROM letenka NATURAL JOIN rezervace WHERE rezervace.id_rezervace='$zrusit'", $link);
+    $row=mysql_fetch_row($result);
+    $idlet=$row[0];
+    
+     mysql_query("DELETE FROM rezervace WHERE id_rezervace='$zrusit'", $link);
+     mysql_query("UPDATE letenka SET pocet_mist=pocet_mist+1 WHERE id_letenky='$idlet'", $link);
+
+     header('location: admin.php?zrus=zruseno');
+     exit(1);
+   }
+   /*konec ruseni rezervaci*/
+
   if(!$_SESSION['admin'])
   { 
     echo "<meta charset=\"utf-8\">";
@@ -41,14 +66,14 @@
 		$uspech=false;
 	}
 	else{
-		/*pripojeni do databaze*/
+		//pripojeni do databaze//
 		$link=getConnectDb();
 		if(!$link)
 		{
 			echo "Chyba spojeni s databazi";
 			exit(1);
 		}
-		/*Vyber databaze*/
+		//Vyber databaze//
 		$select=mysql_select_db("rezervace_letenek", $link);
 		if(!$select)
 		{
@@ -56,7 +81,7 @@
 			exit(1);
 		}
 		$jmena=mysql_query("SELECT login FROM uzivatele", $link);
-		/*Kontrola, zda zadany login existuje*/
+		//Kontrola, zda zadany login existuje//
 	  while ($Kontrola_loginu=mysql_fetch_row($jmena))
 	  {
 	  	foreach ($Kontrola_loginu as $login)
@@ -70,19 +95,19 @@
 		}
 	  }
 		
-		/*Kontrola hesla*/
+		//Kontrola hesla//
 		if($_POST["pass_reg"]!=$_POST["pass_reg2"] && $uspech)
 		{
 			header("location: admin.php?info=hesla se neshodují !!!");
 			$uspech=false;
 		}
-		/*delka hesla, alespon 8 znaku*/
+		//delka hesla, alespon 8 znaku//
 		else if((strlen($_POST["pass_reg"])<=8) && $uspech)
 		{
 			header("location: admin.php?info=Heslo je příliš krátké, musí obsahovat alespoň 8 znaků !!!");
 			$uspech=false;
 		}
-		/*Pokud vsechny udaje byly spravne, uloz do databaze*/
+		//Pokud vsechny udaje byly spravne, uloz do databaze//
 		if($uspech)
 		{	
 			$vlozeni=mysql_query("INSERT INTO uzivatele(login, heslo, jmeno, prijmeni, adresa, email, telefon, is_admin) 
@@ -98,7 +123,8 @@
 			}
 		}
 	}
-}	
+}
+
 ?>
 
 
@@ -248,7 +274,7 @@
         					<tr><td><input type="button" name="reg_window" value="Registrace uživatele" onclick="location.href='registrace.php'"></td></tr>
         				
         					<tr><td><input type="button" name="reg_windows" value="Vytvořit let" onclick="location.href='let.php'"></td></tr>
-        					<tr><td><input type="button" name="reg_windows" value="Přidat společnost" onclick="hello()"></td></tr>		
+        					
         					</table>
         				</form>
         			</div>	
@@ -260,36 +286,51 @@
        					<h2>Rezervace</h2>
        				</div>
        				
-       				<table class="data">
-              <tr class="head">
-                <td>Jméno</td>
-                <td>Přijmení</td>
-                <td>E-mail</td>
+       				<form method="post" action="admin.php">
+        <table class="data">
+            <tr class="head">
+                <td>Login</td>
                 <td>Odlet z</td>
                 <td>Destinace</td>
-                <td>Číslo sedadla</td>
+                <td>Datum</td>
+                <td>Čas odletu</td>
+                <td>Třida</td>
                 <td></td>
-          
-
               </tr>
-       					<?php 
-       						require_once("editace.php");
-       						$link=getConnectDb();
-       						$result=mysql_query("SELECT jmeno, prijmeni, adresa, email, telefon FROM uzivatele");
-							while($row = mysql_fetch_row($result))
-								{
-									echo "<tr>";
-									echo "<td>$row[0] </td>";
-    								echo "<td>$row[1] </td>";
-    								echo "<td>$row[2] </td>";
-    								echo "<td>$row[3] </td>";
-    								echo "<td>$row[4] </td>";
-                    echo "<td>$row[5] </td>";
-    								echo "<td><input type=\"button\" value=\"Zrušit\" onclick=\"window.close()\"></td><br>";
-    								echo "</tr>\n";
-    							}
-    					?>
-       				</table>
+                <?php 
+                  require_once("editace.php");
+                  $login=$_SESSION['username'];
+                  $link=getConnectDb();
+                  $result=mysql_query("SELECT odkud, destinace, datum_odletu, cas_odletu, trida, id_rezervace, login FROM letenka NATURAL JOIN 
+                                      rezervace NATURAL JOIN uzivatele WHERE rezervace.id_cestujici=uzivatele.id_cestujici 
+                                      AND rezervace.id_letenky=letenka.id_letenky", $link);
+                  $i=0;
+              while($row = mysql_fetch_row($result))
+                {
+                  echo "<tr>";
+                  echo "<td>$row[6]</td>";
+                  echo "<td><input type=\"hidden\" name=\"odkud[$i]\">$row[0] </td>";
+                    echo "<td><input type=\"hidden\" name=\"destinace[$i]\">$row[1] </td>";
+                    echo "<td><input type=\"hidden\" name=\"datum_od[$i]\">$row[2] </td>";
+                    echo "<td><input type=\"hidden\" name=\"cas_od[$i]\">$row[3] </td>";
+                    echo "<td><input type=\"hidden\" name=\"trida[$i]\">$row[4] </td>";
+                    echo "<input type=\"hidden\" name=\"id_rezervace[$i]\" value=\"$row[5]\">";
+
+                    echo "<td><input type=\"submit\" name=\"zrusitadmin[$i]\" value=\"Zrušit\" ></td><br>";
+                    echo "</tr>\n";
+                    $i++;
+                  }
+                  
+                    
+                
+                    /*Vysledek registrace, popripade chyba*/
+                    if($_GET['zrus'])
+                    { 
+                      echo "<h3 style=\"color: red; font-weight: bold; font-size: 20px;\">".$_GET['zrus']."</h3>";                     
+                    }                                 
+              ?>
+              </table>
+              </form>
        			</div>
 
         	
