@@ -8,13 +8,13 @@
     {
       if(!is_numeric($_POST['platba_text']))
       {
-        echo "Neplatne cislo uctu";
-        exit(1);
+        header('location: platba.php?transaction=neplatucet');
+         exit(1); 
       }
 
       if(!isset($_SESSION['username']))
       {
-        echo "musit byt prihlasen";
+        header('location: platba.php?transaction=nologin');
         exit(1);
       }
 
@@ -35,7 +35,7 @@
             $result=mysql_query("UPDATE `letenka` SET `pocet_mist`=`pocet_mist`-1 WHERE id_letenky='$let'");
         }
 
-        header('location: platba.php?transaction=$1');
+        header('location: platba.php?transaction=1');
       } 
 
     }
@@ -114,7 +114,12 @@
                   require_once("editace.php");
                   if(!empty($_GET['transaction']))
                   {
+                    if($_GET['transaction']==1)
                       echo "<h3 style=\"color: green\">Platba probehla</h3>";
+                    if($_GET['transaction']=="nologin")
+                      echo "<h3 style=\"color: red\">Musite byt prihlasen</h3>";
+                    if($_GET['transaction']=="neplatucet")
+                      echo "<h3 style=\"color: red\">Neplatne cislo uctu</h3>";
                   }
 
                     /*Pokud jeste neprobehla platba, get je prazdny*/
