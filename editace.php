@@ -21,10 +21,20 @@
 	if(!empty($_POST))
 	{
 		/*Pokud admin bude chtit upravovat*/
-		 if (isset($_POST['submit']))
+		 if (isset($_POST['submit']) || isset($_POST['submitmuj']))
 		 {
-   				$submit_id = array_keys($_POST['submit']);
-   				$submit_id = $submit_id[0];
+		 		if(isset($_POST['submit']))
+		 		{
+   					$submit_id = array_keys($_POST['submit']);
+   					$submit_id = $submit_id[0];
+   				}
+
+   				if(isset($_POST['submitmuj']))
+		 		{
+		 			
+   					$submit_id = array_keys($_POST['submitmuj']);
+   					$submit_id = $submit_id[0];
+   				}
 		
  		$i=0; 		
  		foreach ($_POST['jmeno'] as $key)
@@ -56,8 +66,12 @@
  					$telefon[$i]=$key;
  					$i++;
  			}
+
+ 			if(isset($_POST['submit']))
+ 		 	{
  		/*Zacatek Admin checkbox*/
  			$admin = $_POST['admin'];
+ 		 	
  		 	
  		 	for($j=0; $j<$i; $j++)
  		 	{
@@ -71,23 +85,37 @@
  		 	}
  		 	
  		 	echo $admin[$submit_id];
- 		 /*Konec Admin checkbox*/
+ 		 }
+ 		 /*konec Admin checkbox*/
  				$i=0;
- 		foreach ($_POST['login'] as $key)
- 			{		
+ 				print_r($_POST['login']);
+ 				foreach ($_POST['login'] as $key)
+ 				{		
  					$login[$i]=$key;
  					$i++;
- 			}
+ 				}
+ 			
  			$link=getConnectDb();
+
  			
 			mysql_query("UPDATE uzivatele SET jmeno='$jmeno[$submit_id]' WHERE login='$login[$submit_id]'", $link);
 			mysql_query("UPDATE uzivatele SET prijmeni='$prijmeni[$submit_id]' WHERE login='$login[$submit_id]'", $link);
 			mysql_query("UPDATE uzivatele SET adresa='$adresa[$submit_id]' WHERE login='$login[$submit_id]'", $link);
 			mysql_query("UPDATE uzivatele SET email='$email[$submit_id]' WHERE login='$login[$submit_id]'", $link);
 			mysql_query("UPDATE uzivatele SET telefon='$telefon[$submit_id]' WHERE login='$login[$submit_id]'", $link);			
-			mysql_query("UPDATE uzivatele SET is_admin='$admin[$submit_id]' WHERE login='$login[$submit_id]'", $link);						
-		
-			header('location: admin.php?stav=Upraveno!');
+			
+			if(isset($_POST['submit']))
+				mysql_query("UPDATE uzivatele SET is_admin='$admin[$submit_id]' WHERE login='$login[$submit_id]'", $link);						
+			
+			if(isset($_POST['submit']))
+ 		 	{
+				header('location: admin.php?stav=Upraveno!');
+			}
+			
+			if(isset($_POST['submitmuj']))
+ 		 	{
+				header('location: mujucet.php?stav=Upraveno!');
+			}
 		}
 		/*Konec upravovani*/
 		/*Pokud admin bude chtit mazat*/
