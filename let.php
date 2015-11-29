@@ -1,6 +1,9 @@
 
 <?php
   session_start();
+
+  require_once("editace.php");
+
   if(!isset($_SESSION['username']))
   {
     header('location: login.php');
@@ -15,6 +18,69 @@
     session_destroy();
     header('location: index.php');
     exit();
+  }
+
+  if(isset($_POST['hledej']))
+  {
+    $i=0;
+    foreach ($_POST as $key) 
+    {
+      if(!empty($key))
+      {
+         $i++;
+      }
+    }
+    
+    if($i!=10)
+    {
+      header('location: let.php?info=empty');
+      exit(1);
+    }
+
+    $link=getConnectDb();
+    $odkud=$_POST['odlet'];
+    $destinace=$_POST['prilet'];
+
+    if(is_numeric($_POST['kapacita']))
+        $pocet_mist=$_POST['kapacita'];
+    else{
+        header('location: let.php?info=kapcislo');
+        exit(1);
+      }
+
+
+    $trida=$_POST['trida'];
+     if($trida!="first" && $trida!="economy" && $trida!="business")
+     {
+        header('location: let.php?info=badtrida');
+        exit(1);
+     } 
+
+    $datum_odletu=date("Y-m-d", strtotime($_POST['date']));
+    
+    $cas_odletu=$_POST['cas_odl'];
+    $cas_priletu=$_POST['cas_pril'];
+
+    if(is_numeric($_POST['cena']))
+       $cena=$_POST['cena'];
+    else{
+        header('location: let.php?info=cenacislo');
+        exit(1);
+      }
+    
+    $spolecnost=$_POST['spolecnost'];
+
+    $result=mysql_query("INSERT INTO letenka(odkud, destinace, pocet_mist, trida, datum_odletu, cas_odletu, cas_priletu, spolecnost, cena) 
+                  VALUES ('$odkud', '$destinace','$pocet_mist','$trida', '$datum_odletu', '$cas_odletu' ,'$cas_priletu','$spolecnost','$cena')", $link);
+    if($result)
+    {
+      header('location: let.php?info=ok');
+      exit(1);
+    }
+
+    header('location: let.php?info=error');
+    exit(1);
+    
   }
 ?>
 
@@ -75,7 +141,7 @@
             <div id="login">
               <h2>Vytvoření letu</h2>
             </div>
-              <form action="" method="post">
+              <form action="let.php" method="post">
             
                 <div id="typLetenky">
                   <label>Odlet z</label>
@@ -88,14 +154,41 @@
                   <input id="spolecnost" name="spolecnost" type="text"><br>
                   <label>Datum</label>
                   <input id="datepicker" name="date" placeholder="Datum odletu" type="text">
+                  <br>
+                  <label>Čas odletu</label>
+                  <input id="datepicker" name="cas_odl" type="text">
+                  <label>Čas příletu</label>
+                  <input id="datepicker" name="cas_pril" type="text">
+                  <label>Cena</label>
+                  <input id="datepicker" name="cena" type="text">
+                  <label>Třída</label>
+                  <input id="datepicker" name="trida" type="text">
                  
                   </div>
                   <div id="typLetenky">
                    
-                    <input name="hledej" type="button" value="Vytvořit">
+                    <input name="hledej" type="submit" value="Vytvořit">
 
                 </div>
+                <?php
+                  if(isset($_GET['info']))
+                  {
+                    if($_GET['info']=="empty")
+                        echo "<h3 style=\"color: red; font-weight: bold; font-size: 20px;\">Musíte vyplnit všechna políčka </h3>";
+                    if($_GET['info']=="error")
+                        echo "<h3 style=\"color: red; font-weight: bold; font-size: 20px;\">Nepodařilo se let zapsat do databáze</h3>";  
+                    if($_GET['info']=="ok")
+                        echo "<h3 style=\"color: green; font-weight: bold; font-size: 20px;\">Let vytvořen</h3>";  
+                    if($_GET['info']=="kapcislo")
+                        echo "<h3 style=\"color: red; font-weight: bold; font-size: 20px;\">kapacita musi byt cislo</h3>";    
+                      if($_GET['info']=="cenacislo")
+                        echo "<h3 style=\"color: red; font-weight: bold; font-size: 20px;\">cena musi byt cislo</h3>";    
+                      if($_GET['info']=="badtrida")
+                        echo "<h3 style=\"color: red; font-weight: bold; font-size: 20px;\">Spatny nazev tridy</h3>";    
+                          
+                  }
 
+                ?>
 
                 <span><?php echo $error; ?></span>
               </form>
@@ -110,7 +203,7 @@
                   <tr><td><input type=\"button\" name=\"reg_window\" value=\"Administrace\" onclick=\"location.href='admin.php'\"></td></tr>
                
                   <tr><td><input type=\"button\" name=\"reg_windows\" value=\"Registrace uživatele\" onclick=\"location.href='registrace.php'\"></td></tr>
-                  <tr><td><input type=\"button\" name=\"reg_windows\" value=\"Přidat společnost\" onclick=\"hello()\"></td></tr>
+                  
                   
                   
                   
