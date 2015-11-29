@@ -185,7 +185,7 @@
                   <tr><td><input type=\"button\" name=\"reg_window\" value=\"Administrace\" onclick=\"location.href='admin.php'\"></td></tr>
                
                   <tr><td><input type=\"button\" name=\"reg_windows\" value=\"Vytvořit let\" onclick=\"location.href='let.php'\"></td></tr>
-                  <tr><td><input type=\"button\" name=\"reg_windows\" value=\"Přidat společnost\" onclick=\"hello()\"></td></tr>
+                  
                   
                   
                   
