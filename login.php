@@ -1,14 +1,18 @@
 
 <?php
+  ini_set("default_charset", "UTF-8");
   session_start();
   if(!isset($_SESSION['username']))
   {
     header('location: login.php');
     exit();
   }
-  if($_GET['admin'])
+  if(isset($_GET['admin']))
   {
-      $_SESSION['admin']=true;
+	if($_GET['admin']==1)
+	{	
+	      $_SESSION['admin']=true;
+	}
   }
   if(isset($_GET['odhlasit']))
   {
@@ -25,7 +29,7 @@
 <link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
 <head>
   <title>Rezervace letenek</title>
-  <meta charset="utf-8" />
+  <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -53,7 +57,7 @@
                 <li id="home"><a href="index.php">Letenky</a></li>
                 <li id="news"><a href="#news">Akce</a></li>
                 <?php 
-                    if($_SESSION['admin'])
+                    if(isset($_SESSION['admin']))
                       echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
                     else
                        echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
@@ -67,8 +71,11 @@
         <div id="pageField">
         <div class="infopanel" id="rez2"><br>Jste přihlášen jako <?= htmlspecialchars($_SESSION['username']) ?>
             <?php
-              if($_SESSION['admin'])
-                echo 'admin';
+		if(isset($_SESSION['admin']))
+		{	
+	              if($_SESSION['admin']==true)
+        	        echo 'admin';
+		}
             ?>
         <br>
         <a href="login.php?odhlasit">Odhlásit</a>
@@ -135,7 +142,6 @@
                 ?>
 
 
-                <span><?php echo $error; ?></span>
               </form>
             
           </div>

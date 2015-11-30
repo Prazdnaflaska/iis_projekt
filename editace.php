@@ -1,16 +1,16 @@
 <?php
-	session_start();
-	
+	//session_start();
+	ini_set("default_charset", "UTF-8");	
 	/*Funkce pro pripojeni k databazi*/
 	function getConnectDb()
 	{
-			$link=mysql_connect("127.0.0.1", "root", "decathlon");
+			$link=mysql_connect("localhost:/var/run/mysql/mysql.sock", "xfilip34", "fojrum8a");
  			if(!$link)
  			{
  				echo "Chyba nepodarilo se spojit s databazi";
  				exit();
  			}
- 			$select=mysql_select_db("rezervace_letenek", $link);
+ 			$select=mysql_select_db("xfilip34", $link);
 			if(!$select)
 			{
 				echo "Nepodarilo se vybrat databazi";

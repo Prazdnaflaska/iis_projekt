@@ -1,4 +1,5 @@
 <?php
+	    ini_set("default_charset", "UTF-8");
     session_start();
     require_once('editace.php');
     $empty=false; //Overovani vyplneni formulare
@@ -97,7 +98,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <head>
         <title>Rezervace letenek</title>
-        <meta charset="utf-8" />
+        <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>

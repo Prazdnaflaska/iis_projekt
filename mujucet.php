@@ -1,5 +1,6 @@
 <?php
-  session_start();
+ 	ini_set("default_charset", "UTF-8");
+   session_start();
   require_once("editace.php");
   if(isset($_POST['zrusit']))
   {
@@ -29,7 +30,7 @@
 	<link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
 	<head>
 		<title>Rezervace letenek</title>
-		<meta charset="utf-8" />
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -54,7 +55,7 @@
         <li id="home"><a href="index.php">Letenky</a></li>
         <li id="news"><a href="#news">Akce</a></li>
           <?php 
-                    if(!$_SESSION['admin'])
+                    if(isset($_SESSION['admin']))
                       echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
                     ?>
         <li id="services"><a href="registrace.php">Registrace</a></li>
@@ -69,8 +70,11 @@
           {
             echo "Jste přihlášen jako ". htmlspecialchars($_SESSION['username']);
               
+	     if(isset($_SESSION['admin']))
+	     {
               if($_SESSION['admin'])
                 echo ' admin';         
+	     }
             echo "<br>";
             echo "<a href=\"login.php?odhlasit\">Odhlásit</a>";
           }
@@ -94,11 +98,15 @@
               </tr>
                 <?php 
                   require_once("editace.php");
+		if(isset($_SESSION['username']))
+		{
                   $login=$_SESSION['username'];
+		
                   $link=getConnectDb();
                   $result=mysql_query("SELECT odkud, destinace, datum_odletu, cas_odletu, trida, id_rezervace FROM letenka NATURAL JOIN 
                                       rezervace NATURAL JOIN uzivatele WHERE rezervace.id_cestujici=uzivatele.id_cestujici 
                                       AND rezervace.id_letenky=letenka.id_letenky AND uzivatele.login='$login'", $link);
+		
                   $i=0;
               while($row = mysql_fetch_row($result))
                 {
@@ -113,6 +121,7 @@
                     echo "</tr>\n";
                     $i++;
                   }
+		}
               ?>
               </table>
               </form>
@@ -136,8 +145,11 @@
                 <?php 
                   require_once("editace.php");
                   $link=getConnectDb();
+		if(isset($_SESSION['username']))
+		{
                   $login=$_SESSION['username'];
                     $j=0;
+		    $y=0;
                   $result=mysql_query("SELECT jmeno, prijmeni, adresa, email, telefon, login 
                                         FROM uzivatele WHERE login='$login'", $link);
                   $row=mysql_fetch_row($result);    
@@ -151,7 +163,7 @@
               echo "<input name=\"login[$y]\" type=\"hidden\" class=\"adminace\" value=\"$row[5]\">";
                     echo "<td><input type=\"submit\" value=\"Upravit\" name=\"submitmuj[0]\"></td><br>";
                     echo "</tr>\n";
-                  
+       		}           
               ?>
               </table>
               </form>

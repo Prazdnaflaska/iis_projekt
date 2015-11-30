@@ -1,5 +1,6 @@
 	<?php
 /*Prihlasovani*/
+	ini_set("default_charset", "UTF-8");
 	session_start();
 	require_once('editace.php');
 
@@ -16,17 +17,7 @@
 		if(!isset($_POST['password']))
 			header("location: index.php?info=Nezadali jste heslo !!!");
 		$link=getConnectDb();
-		if(!$link)
-		{
-			echo "Nepodarilo se pripojit k databazi";
-			exit();
-		}
-		$select=mysql_select_db("rezervace_letenek", $link);
-		if(!$select)
-		{
-			echo "Nepodarilo se vybrat databazi";
-			exit();
-		}
+	
 		/*doresit tento SELECT*/
 		echo $_POST['username'];
 		$post_login=$_POST['username'];
@@ -70,7 +61,7 @@
 <link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
 <head>
 	<title>Rezervace letenek</title>
-	<meta charset="utf-8" />
+	<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -98,9 +89,9 @@
                 <li id="home"><a href="index.php">Letenky</a></li>
                 <li id="news"><a href="#news">Akce</a></li>
               	<?php 
-              			if($_SESSION['admin'])
+              			if(isset($_SESSION['admin']))
               				echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
-              			else
+              			else if(isset($_SESSION['username']))
               				echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
               	?>
                 <li id="services"><a href="registrace.php">Registrace</a></li>
@@ -174,7 +165,7 @@
                 ?>
 
 
-                <span><?php echo $error; ?></span>
+              
               </form>
        			
 
@@ -187,15 +178,17 @@
 						<input id="name" name="username" placeholder="E-mail" type="text">
 						<input id="password" name="password" placeholder="Heslo" type="password">
 						<input name="submit" type="submit" value=" Přihlásit ">
-						<span><?php echo $error; ?></span>
+						
 					</form>
 					<?php
+					      if(isset($_GET['info']))
+					      {
 						if($_GET['info']=="notlogin")
 							echo "<h3 style=\"color: red;\">Zadany login neexistuje !!!</h3>";
 						
 						if($_GET['info']=="notpass")
 							echo "<h3 style=\"color: red;\">Zadali jste nespravne heslo !!!</h3>";
-						
+					   }	
 					?>
         </div>
         </div>	

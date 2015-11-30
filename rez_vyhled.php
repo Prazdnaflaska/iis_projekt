@@ -1,4 +1,5 @@
 <?php
+ ini_set("default_charset", "UTF-8");
   session_start();
 
 ?>
@@ -10,7 +11,7 @@
 	<link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
 	<head>
 		<title>Rezervace letenek</title>
-		<meta charset="utf-8" />
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -34,11 +35,14 @@
       <ul class="fancyNav">
         <li id="home"><a href="index.php">Letenky</a></li>
         <li id="news"><a href="#news">Akce</a></li>
-         <?php 
-                if($_SESSION['admin'])
-                    echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
-                else
-                    echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
+         <?php
+	       if(isset($_SESSION['admin']))
+		{ 
+                	if($_SESSION['admin'])
+	                    echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
+        	        else
+                	    echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
+		}
           ?>
         <li id="services"><a href="registrace.php">Registrace</a></li>
       </ul>
@@ -50,10 +54,14 @@
           if(!empty($_SESSION['username']))
           {
             echo "Jste přihlášen jako ". htmlspecialchars($_SESSION['username']);
-              
+            
+	    if(isset($_SESSION['admin']))
+	    {  
               if($_SESSION['admin'])
                 echo ' admin';         
-            echo "<br>";
+	    }
+            
+	    echo "<br>";
             echo "<a href=\"login.php?odhlasit\">Odhlásit</a>";
           }
           else

@@ -1,5 +1,6 @@
 <?php
-	session_start();
+	ini_set("default_charset", "UTF-8");	
+  session_start();
   require_once("editace.php");
 
   /*zruseni rezervaci*/
@@ -26,7 +27,7 @@
    }
    /*konec ruseni rezervaci*/
 
-  if(!$_SESSION['admin'])
+  if(!isset($_SESSION['admin']))
   { 
     echo "<meta charset=\"utf-8\">";
     echo "<p style=\"font-size: 50px;\">nejste přihlášen jako admin !!!</p>";
@@ -38,7 +39,7 @@
   	header('location: login.php');
     exit();
   }
-  if($_GET['admin'])
+  if(isset($_GET['admin']))
   {
   		$_SESSION['admin']=true;
   }
@@ -137,7 +138,7 @@
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<head>
 		<title>Rezervace letenek</title>
-		<meta charset="utf-8" />
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -253,15 +254,16 @@
               ?>
               </table>              
                 <?php
+			if(isset($_GET['stav']))	
                     echo "<h3 style=\"color: green; font-size: 20px; font-weight: bold;\">".$_GET['stav']."</h3>";
                 
                     /*Vysledek registrace, popripade chyba*/
-                    if($_GET['correct'])
+                    if(isset($_GET['correct']))
                     { 
                       echo "<h3 style=\"color: green; font-weight: bold; font-size: 20px;\">".$_GET['info']."</h3>";
                       
                       }
-                    else                        
+                    elseif(isset($_GET['info']))                       
                       echo "<h3 style=\"color: red; font-weight: bold; font-size: 20px;\">".$_GET['info']."</h3>";
                 
                 ?>
@@ -324,7 +326,7 @@
                     
                 
                     /*Vysledek registrace, popripade chyba*/
-                    if($_GET['zrus'])
+                    if(isset($_GET['zrus']))
                     { 
                       echo "<h3 style=\"color: red; font-weight: bold; font-size: 20px;\">".$_GET['zrus']."</h3>";                     
                     }                                 

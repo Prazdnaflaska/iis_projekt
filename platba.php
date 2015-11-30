@@ -1,4 +1,5 @@
 <?php
+  ini_set("default_charset", "UTF-8");
   session_start();
   require_once("editace.php");
   /*Overeni platby a vutvoreni rezervace*/
@@ -52,7 +53,7 @@
 	<link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
 	<head>
 		<title>Rezervace letenek</title>
-		<meta charset="utf-8" />
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -77,8 +78,11 @@
         <li id="home"><a href="index.php">Letenky</a></li>
         <li id="news"><a href="#news">Akce</a></li>
           <?php 
-                    if(!$_SESSION['admin'])
+                if(isset($_SESSION['admin']))
+		{  
+		  if(!$_SESSION['admin'])
                       echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
+		}
                     ?>
         <li id="services"><a href="registrace.php">Registrace</a></li>
       
@@ -91,9 +95,13 @@
           if(!empty($_SESSION['username']))
           {
             echo "Jste přihlášen jako ". htmlspecialchars($_SESSION['username']);
-              
+             
+	    if(isset($_SESSION['admin']))
+	    {		 
               if($_SESSION['admin'])
                 echo ' admin';         
+	   }
+
             echo "<br>";
             echo "<a href=\"login.php?odhlasit\">Odhlásit</a>";
           }
@@ -138,6 +146,7 @@
                   $id_let=$_POST['id_let'];
                   $pocet_letenek=0;
                   $id_pole = array();
+		  $suma=0;
                     for($j=0; $j<$i; $j++)
                     {
                       if(isset($rezervuj[$j]))
@@ -177,12 +186,13 @@
               <label>Číslo účtu</label>
               <form method="post">
               <?php
-                    
+                   if(isset($pocet_letenek))
+		   {	 
                     for ($k=0; $k < $pocet_letenek; $k++) 
                     { 
                         echo "<input type=\"hidden\" id=\"id_let[$k]\" name=\"id_let[$k]\" value=\"$id_pole[$k]\">";
                     } 
-                        
+                   }     
               
               ?>
                   <input id="plat" name="platba_text" type="text">

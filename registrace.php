@@ -1,5 +1,6 @@
 
 <?php
+	ini_set("default_charset", "UTF-8");
 	session_start();
 	require_once("editace.php");
 	$empty=false; //Overovani vyplneni formulare
@@ -22,18 +23,7 @@
 	else{
 		/*pripojeni do databaze*/
 		$link=getConnectDb();
-		if(!$link)
-		{
-			echo "Chyba spojeni s databazi";
-			exit(1);
-		}
-		/*Vyber databaze*/
-		$select=mysql_select_db("rezervace_letenek", $link);
-		if(!$select)
-		{
-			echo "Neni mozne vybrat databazi";
-			exit(1);
-		}
+
 		$jmena=mysql_query("SELECT login FROM uzivatele", $link);
 		/*Kontrola, zda zadany login existuje*/
 	  while ($Kontrola_loginu=mysql_fetch_row($jmena))
@@ -115,9 +105,10 @@
                 <li id="home"><a href="index.php">Letenky</a></li>
                 <li id="news"><a href="#news">Akce</a></li>
               	<?php 
-              			if($_SESSION['admin'])
+              			if(isset($_SESSION['admin']))
               				echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
-                    else
+                    	
+                    	else if(isset($_SESSION['username']))
                       echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
               	?>
                 <li id="services"><a href="registrace.php">Registrace</a></li>
@@ -131,9 +122,12 @@
                     if(!empty($_SESSION['username']))
                         {
                           echo "Jste přihlášen jako ". htmlspecialchars($_SESSION['username']);
-              
+             
+			if(isset($_SESSION['admin']))
+			{ 
                           if($_SESSION['admin'])
-                              echo ' admin';         
+                             echo ' admin';         
+			}
                           echo "<br>";
                           echo "<a href=\"login.php?odhlasit\">Odhlásit</a>";
                         }
@@ -165,18 +159,21 @@
             
             	 <?php 
             	 	/*Vysledek registrace, popripade chyba*/
-            	 	if($_GET['correct'])
+		      if(isset($_GET['info']))
+		      {		
+            	 	if(isset($_GET['correct']))
             	 	{	
             	 		echo "<h3 style=\"color: green; font-weight: bold;\">".$_GET['info']."</h3>";
             	 		echo "<a href=\"index.php\" style=\"font-size: 20px; color: blue;\">Přejít na hlavní stránku</a>";
             	  	}
             	 	else		            	 			
             	 		echo "<h3 style=\"color: red; font-weight: bold;\">".$_GET['info']."</h3>";
+		      }
                 ?>
             </div>
             </div>
 
-            <?php  if($_SESSION['admin']) 
+            <?php  if(isset($_SESSION['admin']))
             {
               echo"<div id=\"tlacitko\"  class=\"reg1\">
                 <form method=\"post\">
