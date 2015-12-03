@@ -131,7 +131,7 @@
 
         
         <div id="pageField">
-        <div class="infopanel" id="rez2"><br>Jste přihlášen jako <?= htmlspecialchars($_SESSION['username']) ?>
+        <div class="infopanel" id="index"><br>Jste přihlášen jako <?= htmlspecialchars($_SESSION['username']) ?>
             <?php
               if($_SESSION['admin'])
                 echo 'admin';
@@ -139,7 +139,7 @@
         <br>
         <a href="login.php?odhlasit">Odhlásit</a>
          </div>
-          <div id="login_pg">
+          <div class="textField" id="rezervace2">
             <div id="login">
               <h2>Vytvoření letu</h2>
             </div>
@@ -176,17 +176,17 @@
                   if(isset($_GET['info']))
                   {
                     if($_GET['info']=="empty")
-                        echo "<h3 style=\"color: red; font-weight: bold; font-size: 20px;\">Musíte vyplnit všechna políčka </h3>";
+                        echo "<div id=\"let\">Musíte vyplnit všechna políčka </div>";
                     if($_GET['info']=="error")
-                        echo "<h3 style=\"color: red; font-weight: bold; font-size: 20px;\">Nepodařilo se let zapsat do databáze</h3>";  
+                        echo "<div id=\"let\">Nepodařilo se let zapsat do databáze</div>";  
                     if($_GET['info']=="ok")
-                        echo "<h3 style=\"color: green; font-weight: bold; font-size: 20px;\">Let vytvořen</h3>";  
+                        echo "<div id=\"ok_let\">Let vytvořen</div>";  
                     if($_GET['info']=="kapcislo")
-                        echo "<h3 style=\"color: red; font-weight: bold; font-size: 20px;\">kapacita musi byt cislo</h3>";    
+                        echo "<div id=\"let\">kapacita musi byt cislo</div>";    
                       if($_GET['info']=="cenacislo")
-                        echo "<h3 style=\"color: red; font-weight: bold; font-size: 20px;\">cena musi byt cislo</h3>";    
+                        echo "<div id=\"let\">cena musi byt cislo</div>";    
                       if($_GET['info']=="badtrida")
-                        echo "<h3 style=\"color: red; font-weight: bold; font-size: 20px;\">Spatny nazev tridy</h3>";    
+                        echo "<div id=\"let\">Spatny nazev tridy</div>";    
                           
                   }
 
