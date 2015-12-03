@@ -103,7 +103,7 @@
 		 <nav>
             <ul class="fancyNav">
                 <li id="home"><a href="index.php">Letenky</a></li>
-                <li id="news"><a href="#news">Akce</a></li>
+                <li id="news"><a href="destinace.php">Kam létáme</a></li>
               	<?php 
               			if(isset($_SESSION['admin']))
               				echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
@@ -117,7 +117,7 @@
         </div>
         
         <div id="pageField">
-          <div class="infopanel" id="reg2"><br>
+          <div class="infopanel" id="index"><br>
               <?php
                     if(!empty($_SESSION['username']))
                         {
@@ -175,7 +175,7 @@
 
             <?php  if(isset($_SESSION['admin']))
             {
-              echo"<div id=\"tlacitko\"  class=\"reg1\">
+              echo"<div id=\"tlacitko_reg1\">
                 <form method=\"post\">
                 <table class=\"edit_menu\">
                 
