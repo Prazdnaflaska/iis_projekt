@@ -53,10 +53,12 @@
 		<nav>
       <ul class="fancyNav">
         <li id="home"><a href="index.php">Letenky</a></li>
-        <li id="news"><a href="#news">Akce</a></li>
+        <li id="news"><a href="destinace.php">Kam létáme</a></li>
           <?php 
                     if(isset($_SESSION['admin']))
                       echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
+                     else
+                       echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
                     ?>
         <li id="services"><a href="registrace.php">Registrace</a></li>
       
@@ -64,7 +66,7 @@
     </nav>
     </div>
     <div id="pageField">
-      <div class="infopanel" id="rez_vh"><br>
+      <div class="infopanel" id="index"><br>
         <?php
           if(!empty($_SESSION['username']))
           {
@@ -82,7 +84,7 @@
             echo "Nejste přihlášen";
         ?>
       </div>
-      <div id="rez_vyhled">
+      <div class="textField" id="ucet">
         <div id="login">
        		<h2>Moje rezervace</h2>
        	</div>
@@ -117,7 +119,7 @@
                     echo "<td><input type=\"hidden\" name=\"cas_od[$i]\">$row[3] </td>";
                     echo "<td><input type=\"hidden\" name=\"trida[$i]\">$row[4] </td>";
                     echo "<input type=\"hidden\" name=\"id_rezervace[$i]\" value=\"$row[5]\">";
-                    echo "<td><input type=\"submit\" name=\"zrusit[$i]\" value=\"Zrušit\" onclick=\"window.close()\"></td><br>";
+                    echo "<td><input type=\"submit\" name=\"zrusit[$i]\" value=\"Zrušit\"></td><br>";
                     echo "</tr>\n";
                     $i++;
                   }
@@ -128,7 +130,7 @@
 
       </div>
 
-       <div id="rez_vyhled">
+       <div class="textField" id="ucet">
         <div id="login">
           <h2>Můj účet</h2>
         </div>
@@ -140,6 +142,7 @@
                 <td>Adresa</td>
                 <td>E-mail</td>
                 <td>Telefoní číslo</td>
+                <td>Heslo</td>
                 <td></td>
               </tr>
                 <?php 
@@ -150,7 +153,7 @@
                   $login=$_SESSION['username'];
                     $j=0;
 		    $y=0;
-                  $result=mysql_query("SELECT jmeno, prijmeni, adresa, email, telefon, login 
+                  $result=mysql_query("SELECT jmeno, prijmeni, adresa, email, telefon, heslo, login 
                                         FROM uzivatele WHERE login='$login'", $link);
                   $row=mysql_fetch_row($result);    
                  
@@ -160,12 +163,20 @@
               echo "<td><input name=\"adresa[$j]\" type=\"text\" class=\"adminace\" value=\"$row[2]\"> </td>";
               echo "<td><input name=\"email[$j]\" type=\"text\" class=\"adminace\" value=\"$row[3]\"></td>";
               echo "<td><input name=\"telefon[$j]\" type=\"text\" class=\"adminace\" value=\"$row[4]\"> </td>";
-              echo "<input name=\"login[$y]\" type=\"hidden\" class=\"adminace\" value=\"$row[5]\">";
+              echo "<td><input name=\"heslo[$j]\" type=\"text\" class=\"adminace\" value=\"$row[5]\"> </td>";
+              echo "<input name=\"login[$y]\" type=\"hidden\" class=\"adminace\" value=\"$row[6]\">";
                     echo "<td><input type=\"submit\" value=\"Upravit\" name=\"submitmuj[0]\"></td><br>";
                     echo "</tr>\n";
        		}           
               ?>
               </table>
+
+              <?php
+                      if(isset($_GET['stav']))  
+                    echo "<div id=\"ok_uziv_ucet\">".$_GET['stav']."</div>";
+                
+                    /*Vysledek registrace, popripade chyba*/
+                   ?>
               </form>
       </div>
     </div>
