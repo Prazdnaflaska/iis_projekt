@@ -55,7 +55,7 @@
      <nav>
             <ul class="fancyNav">
                 <li id="home"><a href="index.php">Letenky</a></li>
-                <li id="news"><a href="#news">Akce</a></li>
+                <li id="news"><a href="destinace.php">Kam létáme</a></li>
                 <?php 
                     if(isset($_SESSION['admin']))
                       echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
@@ -69,7 +69,7 @@
 
         
         <div id="pageField">
-        <div class="infopanel" id="rez2"><br>Jste přihlášen jako <?= htmlspecialchars($_SESSION['username']) ?>
+        <div class="infopanel" id="index"><br>Jste přihlášen jako <?= htmlspecialchars($_SESSION['username']) ?>
             <?php
 		if(isset($_SESSION['admin']))
 		{	
@@ -80,18 +80,13 @@
         <br>
         <a href="login.php?odhlasit">Odhlásit</a>
          </div>
-          <div id="login_pg">
+          <div class="textField" id="rezervace2">
             <div id="login">
               <h2>Rezervace letenek</h2>
             </div>
               
               <form action="rez_vyhled.php" method="post">
-                <div id="typLetenky">
-                  <label>Typ letenky</label>
-                  <input type="radio" name="typ" value="" checked>Zpáteční
-                  <input type="radio" name="typ" value="" >Jednosměrná
-                  
-                </div>
+
                 <div id="typLetenky">
                   <label>Odlet z</label>
                   <input id="letenka" name="odlet" type="text"><br>
@@ -120,20 +115,20 @@
 
                     switch ($_GET['notice']) {
                       case "mistoOdletu":
-                        echo "<h3 style=\"color: red;\">Zadejte misto odletu !!!</h3>";
+                        echo "<div id=\"vyhled\">Zadejte misto odletu !!!</div>";
                         break;
                       case "neplaModl":
-                          echo "<h3 style=\"color: red;\">Misto odletu nenalezeno !!!</h3>";
+                          echo "<div id=\"vyhled\">Misto odletu nenalezeno !!!</div>";
                           break;
                       case "neplaDest":
-                          echo "<h3 style=\"color: red;\">Destinace nebyla nalezena !!!</h3>";
+                          echo "<div id=\"vyhled\">Destinace nebyla nalezena !!!</div>";
                           break;  
                       case 'dateNon':                      
-                        echo "<h3 style=\"color: red;\">Zadny let v tomto datu !!!</h3>"; 
+                        echo "<div id=\"vyhled\">Zadny let v tomto datu !!!</div>"; 
                         break;
                       
                       default:
-                        echo "<h3 style=\"color: red;\">Zkontrolujte zda jste spravne vyplnili formular !!!</h3>";
+                        echo "<div id=\"vyhled\">Zkontrolujte zda jste spravne vyplnili formular !!!</div>";
                         
                         break;
                     }
