@@ -155,11 +155,7 @@
   			{
   				$('#show_div').load('form.php');
   			}
-  			
-
-			function showDiv(){
-				document.querySelector('#main').classList.add('blur');
-				document.querySelector('#show_div').classList.remove('hidden');
+  		
 			}
 
 			
@@ -176,7 +172,7 @@
 				<nav>
             		<ul class="fancyNav">
                 		<li id="home"><a href="index.php">Letenky</a></li>
-                		<li id="news"><a href="admin.php">Akce</a></li>
+                		<li id="news"><a href="destinace.php">Kam létáme</a></li>
                 		<?php 
               			if($_SESSION['admin'])
               				echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
@@ -188,7 +184,7 @@
         	
         	<div id="pageField">
         	 
-            <div class="infopanel"  id="admin"><br><br>Jste přihlášen jako <?= htmlspecialchars($_SESSION['username']) ?>
+            <div class="infopanel"  id="index"><br>Jste přihlášen jako <?= htmlspecialchars($_SESSION['username']) ?>
             <?php
               if($_SESSION['admin'])
                 echo 'admin';
@@ -201,7 +197,7 @@
 
         				
         			<div id="administrace">
-       					<h2>Users</h2>
+       					<h2>Uživatelé</h2>
        				</div>
        				
        				<table class="data">
@@ -255,16 +251,16 @@
               </table>              
                 <?php
 			if(isset($_GET['stav']))	
-                    echo "<h3 style=\"color: green; font-size: 20px; font-weight: bold;\">".$_GET['stav']."</h3>";
+                    echo "<div id=\"ok_uziv\">".$_GET['stav']."</div>";
                 
                     /*Vysledek registrace, popripade chyba*/
                     if(isset($_GET['correct']))
                     { 
-                      echo "<h3 style=\"color: green; font-weight: bold; font-size: 20px;\">".$_GET['info']."</h3>";
+                      echo "<div id=\"ok_uziv\">".$_GET['info']."</div>";
                       
                       }
                     elseif(isset($_GET['info']))                       
-                      echo "<h3 style=\"color: red; font-weight: bold; font-size: 20px;\">".$_GET['info']."</h3>";
+                      echo "<div id=\"zrus_uziv\">".$_GET['info']."</div>";
                 
                 ?>
               </form> 
@@ -281,7 +277,58 @@
         				</form>
         			</div>	
 
-       			<div class="textField"  id="users">
+
+ <div class="textField" id="users">
+        <div id="login">
+          <h2>Můj účet</h2>
+        </div>
+        <form action="editace.php" method="post"> 
+        <table class="data">
+            <tr class="head">
+                <td>Jméno</td>
+                <td>Příjmení</td>
+                <td>Adresa</td>
+                <td>E-mail</td>
+                <td>Telefoní číslo</td>
+                <td>Heslo</td>
+                <td></td>
+              </tr>
+                <?php 
+                  require_once("editace.php");
+                  $login=$_SESSION['username'];
+                  $link=getConnectDb();
+                    $z=0;
+                    $a=0;
+                  $result=mysql_query("SELECT jmeno, prijmeni, adresa, email, telefon, heslo, login 
+                                        FROM uzivatele WHERE login='$login'", $link);
+                  $row=mysql_fetch_row($result);    
+                  echo "<br>";
+                  echo "<tr>";
+                  echo "<td><input name=\"jmeno[$z]\" type=\"text\" class=\"adminace\" value=\"$row[0]\"></td>";
+              echo "<td><input name=\"prijmeni[$z]\"type=\"text\" class=\"adminace\" value=\"$row[1]\"></td>";
+              echo "<td><input name=\"adresa[$z]\" type=\"text\" class=\"adminace\" value=\"$row[2]\"> </td>";
+              echo "<td><input name=\"email[$z]\" type=\"text\" class=\"adminace\" value=\"$row[3]\"></td>";
+              echo "<td><input name=\"telefon[$z]\" type=\"text\" class=\"adminace\" value=\"$row[4]\"> </td>";
+              echo "<td><input name=\"heslo[$z]\" type=\"text\" class=\"adminace\" value=\"$row[5]\"> </td>";
+              echo "<input name=\"login[$a]\" type=\"hidden\" class=\"adminace\" value=\"$row[6]\">";
+                    echo  "<td><input type=\"submit\" value=\"Upravit\" class=\"adminace\" name=\"submit_ucet[$z]\"></td>";
+                    echo "</tr>\n";
+              ?>
+              </table>
+              <?php
+                      if(isset($_GET['stav2']))  
+                    echo "<div id=\"ok_uziv\">".$_GET['stav2']."</div>";
+                
+                    /*Vysledek registrace, popripade chyba*/
+                   ?>
+                
+                
+                  
+            
+              
+              </form>
+      </div>
+       			<div class="textField"  id="users_2">
 
         				
         			<div id="administrace">
@@ -322,17 +369,18 @@
                     echo "</tr>\n";
                     $i++;
                   }
-                  
-                    
-                
+                  ?>
+           
+                      </table>
+              </form> 
+                <?php
                     /*Vysledek registrace, popripade chyba*/
                     if(isset($_GET['zrus']))
                     { 
-                      echo "<h3 style=\"color: red; font-weight: bold; font-size: 20px;\">".$_GET['zrus']."</h3>";                     
-                    }                                 
-              ?>
-              </table>
-              </form>
+                      echo "<div id=\"zrus_uziv\">".$_GET['zrus']."</div>";                     
+                    }      
+                    ?>                           
+              
        			</div>
 
         	
