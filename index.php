@@ -87,7 +87,7 @@
 		 <nav>
             <ul class="fancyNav">
                 <li id="home"><a href="index.php">Letenky</a></li>
-                <li id="news"><a href="#news">Akce</a></li>
+                <li id="news"><a href="destinace.php">Kam létáme</a></li>
               	<?php 
               			if(isset($_SESSION['admin']))
               				echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
@@ -102,19 +102,13 @@
         <div id="pageField">
         <div class="infopanel" id="index">
         	<br>Nejste přihlášen
-        
          </div>
         	<div class="textField" id="rezervace">
         		<div id="login">
        				<h2>Rezervace letenek</h2>
        			</div>
        				<form action="rez_vyhled.php" method="post">
-                <div id="typLetenky">
-                  <label>Typ letenky</label>
-                  <input type="radio" name="typ" value="" checked>Zpáteční
-                  <input type="radio" name="typ" value="" >Jednosměrná
-                  
-                </div>
+
                 <div id="typLetenky">
                   <label>Odlet z</label>
                   <input id="letenka" name="odlet" type="text"><br>
@@ -154,7 +148,9 @@
                       case 'dateNon':                      
                         echo "<h3 style=\"color: red;\">Zadny let v tomto datu !!!</h3>"; 
                         break;
-                      
+                      case 'nologin':
+                        echo "<h3 style=\"color: red;\">Musite byt prihlasen</h3>"; 
+                        break;
                       default:
                         echo "<h3 style=\"color: red;\">Zkontrolujte zda jste spravne vyplnili formular !!!</h3>";
                         
@@ -184,10 +180,10 @@
 					      if(isset($_GET['info']))
 					      {
 						if($_GET['info']=="notlogin")
-							echo "<h3 style=\"color: red;\">Zadany login neexistuje !!!</h3>";
+							echo "<div class=\"login_chyby\" id=\"log\">Zadany login neexistuje !!!</div>";
 						
 						if($_GET['info']=="notpass")
-							echo "<h3 style=\"color: red;\">Zadali jste nespravne heslo !!!</h3>";
+							echo "<div class=\"login_chyby\" id=\"log\">Zadali jste nespravne heslo !!!</div>";
 					   }	
 					?>
         </div>
