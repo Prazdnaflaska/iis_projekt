@@ -134,11 +134,23 @@ div.textField{
 
 }
 
+
+
 div#rezervace{
 
 width: 550px;
 
+
 }
+
+div#rezervace2{
+
+width: 550px;
+margin-left: 270px;
+margin-bottom: 50px;
+
+}
+
 
 div#rezervace_lt{
 	margin-left: 290px;
@@ -150,13 +162,33 @@ div#login_pg{
 	box-shadow: 7px 7px 8px #888888;
 	margin:auto;
 	margin-top: 110px;
-	margin-bottom: 50px;
+/*	margin-bottom: 50px;*/
 	width: 550px;
 }
 
 div#users{
 
 	width: 900px;
+
+}
+
+div#users_2{
+
+	width: 900px;
+	margin-bottom: 50px;
+}
+
+div#kam{
+
+	width: 500px;
+	margin-bottom: 50px;
+	margin-left: 380px;
+}
+div#ucet{
+	width: 800px;
+	margin-left: 150px;
+	margin-bottom: 50px;
+
 }
 
 
@@ -262,7 +294,7 @@ input[name=cas_odl]{
 width:40%;
 padding:10px;
 margin-top:8px;
-margin-left: 79px;
+margin-left: 64px;
 border:1px solid #ccc;
 padding-left:5px;
 font-size:15px;
@@ -274,7 +306,7 @@ input[name=cas_pril]{
 width:40%;
 padding:10px;
 margin-top:8px;
-margin-left: 79px;
+margin-left: 66px;
 border:1px solid #ccc;
 padding-left:5px;
 font-size:15px;
@@ -286,7 +318,7 @@ input[name=cena]{
 width:40%;
 padding:10px;
 margin-top:8px;
-margin-left: 79px;
+margin-left: 111px;
 border:1px solid #ccc;
 padding-left:5px;
 font-size:15px;
@@ -306,6 +338,20 @@ font-size:15px;
 font-family: 'Titillium Web', sans-serif;
 background-color: #F0F0F0;
 }
+
+
+input[name=trida]{
+width:40%;
+padding:10px;
+margin-top:8px;
+margin-left: 114px;
+border:1px solid #ccc;
+padding-left:5px;
+font-size:15px;
+font-family: 'Titillium Web', sans-serif;
+background-color: #F0F0F0;
+}
+
 
 input[name=pocet_osob]{
 width:40%;
@@ -406,7 +452,7 @@ input[name=rez_vyhled_bt] {
 margin: auto;
 margin-bottom:40px;
 margin-top: 8px;
-margin-left: 320px;
+margin-left: 230px;
 width:43%;
 background-color:#FFBC00;
 color:#fff;
@@ -553,7 +599,7 @@ border:2px solid #FFCB00;
 padding:10px;
 font-size:20px;
 cursor:pointer;
-margin-left: 187px;
+margin-left: 150px;
 padding-top: 12px;
 font-family: 'Orbitron', sans-serif;
 }
@@ -591,7 +637,7 @@ font-size:12px;
 font-family: 'Orbitron', sans-serif;
 background-color: #F0F0F0;
 padding:10px;
-margin-top: 8px;
+margin-left: 150px;
 }
 
 div.infopanel
@@ -603,15 +649,15 @@ div.infopanel
 	
 }
 
+div#index{
+margin-top: 15px;
+margin-right: -100px;
+}
+
 div#admin{
 	margin-right: -35px;
 }
 
-div#reg2{
-	margin-top: 15px;
-	margin-right: 65px;
-	
-}
 
 div#rez{
 
@@ -652,10 +698,7 @@ div#platba_div{
 
 }
 
-div#index{
-margin-top: 15px;
-margin-right: -150px;
-}
+
 
 #loginform{
 	width: 366px;
@@ -663,6 +706,7 @@ margin-right: -150px;
 	box-shadow: 7px 7px 8px #888888;
 	float:right;
 	margin-top: 110px;
+	margin-bottom: 190px;
 	
 }
 
@@ -720,8 +764,8 @@ div#tlacitko_rez{
 
 div#tlacitko_let{
 	float:right;	
-	margin-top: -504px;
-	margin-right: 72px;
+	margin-top: 40px;
+	margin-right: 82px;
 }
 
 
@@ -732,15 +776,17 @@ div#tlacitko_let{
 	float:left;
 	margin-top: 110px;
 	margin-left: 350px;
+	margin-bottom: 50px;
 
 
 
 }
 
-div#tlacitko.reg1{
+div#tlacitko_reg1{
 	
-	margin-top: 45px;
-	margin-right: 115px;
+	float: right;
+	margin-top: 42px;
+	margin-right: 145px;
 
 
 	
@@ -787,3 +833,90 @@ margin-bottom: 4px;
 	width: 100px;
 }
 
+div.chyby{
+
+	color:red;
+	font-size: 22px;
+	font-family: 'Orbitron', sans-serif;
+
+}
+
+div#pay{
+	margin-left: 150px;
+	margin-bottom: 10px;
+}
+
+div#pay_2{
+	position: absolute;
+	left: 500px;
+	top:642px;
+}
+
+div #uspech{
+	color:green;
+	font-size: 20px;
+	font-family: 'Orbitron', sans-serif;
+	margin-left: 185px;
+	margin-bottom: 10px;
+}
+
+div .login_chyby{
+	color:red;
+	font-size: 20px;
+	font-family: 'Orbitron', sans-serif;
+}
+
+div#log{
+	margin-left: 40px;
+	margin-bottom: 10px;
+}
+
+div #vyhled{
+	color:red;
+	font-size: 20px;
+	font-family: 'Orbitron', sans-serif;
+	margin-bottom: 10px;
+	margin-left: 160px;
+}
+
+
+div #let{
+	color:red;
+	font-size: 20px;
+	font-family: 'Orbitron', sans-serif;
+	margin-bottom: 10px;
+	margin-left: 120px;
+}
+
+div#ok_let{
+	color:green;
+	font-size: 20px;
+	font-family: 'Orbitron', sans-serif;
+	margin-bottom: 10px;
+	margin-left: 120px;
+}
+
+div#ok_uziv{
+	color:green;
+	font-size: 20px;
+	font-family: 'Orbitron', sans-serif;
+	margin-bottom: 10px;
+	margin-left: 390px;
+}
+
+div#ok_uziv_ucet{
+	color:green;
+	font-size: 20px;
+	font-family: 'Orbitron', sans-serif;
+	margin-bottom: 10px;
+	margin-left: 340px;
+}
+
+
+div#zrus_uziv{
+	color:red;
+	font-size: 20px;
+	font-family: 'Orbitron', sans-serif;
+	margin-bottom: 10px;
+	margin-left: 390px;
+}
