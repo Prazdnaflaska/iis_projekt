@@ -10,7 +10,7 @@
       if(!is_numeric($_POST['platba_text']))
       {
         header('location: platba.php?transaction=neplatucet');
-         exit(1); 
+        exit(1); 
       }
 
       if(!isset($_SESSION['username']))
@@ -20,7 +20,7 @@
       }
 
           
-      if(!empty($_POST['id_let']))
+      if(isset($_POST['id_let']))
       {
         
         $link=getConnectDB();
@@ -28,18 +28,22 @@
         $result=mysql_query("SELECT id_cestujici FROM uzivatele WHERE login='$user'", $link);
         $row=mysql_fetch_row($result);
           $id_user=$row[0];
+
         foreach ($_POST['id_let'] as $let) 
         {
            /*Vytvoreni rezervace*/
             $result=mysql_query("INSERT INTO rezervace(`id_cestujici`, `id_letenky`, `zaplaceno`) VALUES ('$id_user','$let', 'true')", $link);
             /*snizeni poctu mist v letadle na zaklade rezervace*/
             $result=mysql_query("UPDATE `letenka` SET `pocet_mist`=`pocet_mist`-1 WHERE id_letenky='$let'");
+            
         }
-
+       
         header('location: platba.php?transaction=1');
-      } 
+    	exit();
+      }
 
     }
+
 
     else{
       echo "zadejte cislo uctu";
@@ -76,21 +80,23 @@
 		<nav>
       <ul class="fancyNav">
         <li id="home"><a href="index.php">Letenky</a></li>
-        <li id="news"><a href="#news">Akce</a></li>
-          <?php 
-                if(isset($_SESSION['admin']))
-		{  
-		  if(!$_SESSION['admin'])
+        <li id="news"><a href="destinace.php">Kam létáme</a></li>
+            <?php
+        
+    
+                  if($_SESSION['admin'])
+                      echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
+                  else if(isset($_SESSION['username']))
                       echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
-		}
-                    ?>
+    
+          ?>
         <li id="services"><a href="registrace.php">Registrace</a></li>
       
       </ul>
     </nav>
     </div>
     <div id="pageField">
-      <div class="infopanel" id="rez_vh"><br>
+      <div class="infopanel" id="index"><br>
         <?php
           if(!empty($_SESSION['username']))
           {
@@ -109,32 +115,28 @@
             echo "Nejste přihlášen";
         ?>
       </div>
-      <div id="platba_div">
+      <div class="textField" id="rezervace2">
         <div id="login">
        		<h2>Platba</h2>
        	</div>
-        <table class="data">
-            <tr class="head">
-                <td>Počet letenek</td>
-                <td>Cena</td>
-              </tr>
+        
                 <?php 
                   require_once("editace.php");
-                  if(!empty($_GET['transaction']))
-                  {
-                    if($_GET['transaction']==1)
-                      echo "<h3 style=\"color: green\">Platba probehla</h3>";
-                    if($_GET['transaction']=="nologin")
-                      echo "<h3 style=\"color: red\">Musite byt prihlasen</h3>";
-                    if($_GET['transaction']=="neplatucet")
-                      echo "<h3 style=\"color: red\">Neplatne cislo uctu</h3>";
-                  }
-
+                  
                     /*Pokud jeste neprobehla platba, get je prazdny*/
-                else{
-
+                      echo "<table class=\"data\">";
+                     echo "<tr class=\"head\">";
+                     echo "<td>Počet letenek</td>";
+                      echo "<td>Cena</td>";
+                      echo "</tr>";
                   if(!empty($_POST))
                   {
+
+                  	if(!isset($_POST['rezervuj']))
+                  	{
+                  		header('location: rez_vyhled.php?notice=noreserv');
+                  		exit();
+                  	}
                         $i=0;
                         foreach ($_POST['odlet'] as $key) 
                         {
@@ -146,7 +148,7 @@
                   $id_let=$_POST['id_let'];
                   $pocet_letenek=0;
                   $id_pole = array();
-		  $suma=0;
+		              $suma=0;
                     for($j=0; $j<$i; $j++)
                     {
                       if(isset($rezervuj[$j]))
@@ -162,42 +164,60 @@
                       }
                     }
 
-                    if($suma==0)
-                    {
-                      echo "<h3 style=\"color: red;\">Nevybral jste zadnou rezervaci</h3>";
-                      echo "<input style=\"color: red; background-color: white; border: none; font-size: 18px;\" value=\"zpet\" name=\"cancel\" type=\"button\" onclick=\"location.href='index.php'\">";
-                    }
-                  }
+                      $_SESSION['cena']=$suma;
+                      $_SESSION['pocet_letenek']=$pocet_letenek;
 
-            else
-              echo "chyba";
-                  
-                  /*Vypis informaci o platbe*/
-                  echo "<br>";
-                  echo "<tr>";
-                  echo "<td>$pocet_letenek </td>";
+                  }                                            
+                    
+                    /*Vypis informaci o platbe*/
+                     $pocet_letenek=$_SESSION['pocet_letenek'];
+                    $suma=$_SESSION['cena'];  
+                    echo "<br>";
+                    echo "<tr>";
+                    echo "<td>$pocet_letenek </td>";
                     echo "<td>$suma </td>";
-
                     echo "</tr>\n";
-            }    
+                    
               ?>
               </table>
               <div id="platba">
-              <label>Číslo účtu</label>
+              
               <form method="post">
               <?php
                    if(isset($pocet_letenek))
-		   {	 
+		              {	 
                     for ($k=0; $k < $pocet_letenek; $k++) 
                     { 
-                        echo "<input type=\"hidden\" id=\"id_let[$k]\" name=\"id_let[$k]\" value=\"$id_pole[$k]\">";
+                        echo "<input type=\"hidden\" id=\"id_let[$k]\" name=\"id_let[$k]\" >";
                     } 
                    }     
               
               ?>
-                  <input id="plat" name="platba_text" type="text">
+                 
+                  <input id="plat" name="platba_text" type="text" placeholder="Číslo účtu">
                   <input value="Zaplatit" name="submit_platba" type="submit">
                     <input value="Zrušit" name="cancel" type="button" onclick="location.href='index.php'">
+                    <?php
+                    
+                    if(!empty($_GET['transaction']))
+                   {
+                    if($_GET['transaction']==1)
+                    {
+                      echo "<div id=\"uspech\">Platba probehla</div>";
+                      
+                    }
+
+                    if($_GET['transaction']=="nologin")
+                      echo "<div class=\"chyby\" id=\"pay\">Musite byt prihlasen</div>";
+
+                    if($_GET['transaction']=="neplatucet")
+                    {
+                      echo "<div class=\"chyby\" id=\"pay\">Neplatne cislo uctu</div>";
+
+                    }
+                  }
+
+                    ?>
               </div>
 
       </div>
@@ -206,3 +226,4 @@
 
 </body>
 </html>
+  
