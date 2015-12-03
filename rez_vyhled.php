@@ -34,22 +34,22 @@
 		<nav>
       <ul class="fancyNav">
         <li id="home"><a href="index.php">Letenky</a></li>
-        <li id="news"><a href="#news">Akce</a></li>
+        <li id="news"><a href="destinace.php">Kam létáme</a></li>
          <?php
-	       if(isset($_SESSION['admin']))
-		{ 
+	      
+		
                 	if($_SESSION['admin'])
 	                    echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
-        	        else
-                	    echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
-		}
+        	        else if(isset($_SESSION['username']))
+                      echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
+	
           ?>
         <li id="services"><a href="registrace.php">Registrace</a></li>
       </ul>
     </nav>
     </div>
     <div id="pageField">
-      <div class="infopanel" id="rez_vh"><br>
+      <div class="infopanel" id="index"><br>
         <?php
           if(!empty($_SESSION['username']))
           {
@@ -68,7 +68,7 @@
             echo "Nejste přihlášen";
         ?>
       </div>
-      <div id="rez_vyhled">
+      <div class="textField" id="ucet">
         <div id="login">
        		<h2>Rezervace letenek</h2>
        	</div>
@@ -80,6 +80,7 @@
                 <td>Počet míst</td>
                 <td>Datum</td>
                 <td>Čas odletu</td>
+                <td>Společnost</td>
                 <td>Cena</td>
                 <td></td>
               </tr>
@@ -100,9 +101,10 @@
                             echo "<td><input name=\"pocet_mist[$y]\" value=\"$row[2]\" type=\"hidden\">$row[2] </td>";
                             echo "<td><input name=\"datum[$y]\" value=\"$row[3]\" type=\"hidden\">$row[3] </td>";
                             echo "<td><input name=\"cas[$y]\" value=\"$row[4]\" type=\"hidden\">$row[4] </td>";
-                            echo "<td><input name=\"cena[$y]\" value=\"$row[5]\" type=\"hidden\">$row[5] </td>";
+                            echo "<td><input name=\"spolecnost[$y]\" value=\"$row[5]\" type=\"hidden\">$row[5] </td>";
+                            echo "<td><input name=\"cena[$y]\" value=\"$row[6]\" type=\"hidden\">$row[6] </td>";
                             echo "<td><input type=\"checkbox\" name=\"rezervuj[$y]\" value=\"Rezervovat\" ></td><br>";
-                            echo "<input name=\"id_let[$y]\" value=\"$row[6]\" type=\"hidden\">";
+                            echo "<input name=\"id_let[$y]\" value=\"$row[7]\" type=\"hidden\">";
                             echo "</tr>\n";
                             $y++;
 
@@ -111,15 +113,29 @@
                           return $isCorrect;
                }
 
-                if(!empty($_POST))
+                if(empty($_SESSION['username']))
                 {
+                  header('location: index.php?notice=nologin');
+                  exit(1);
+                }
+
+	     if(isset($_GET['notice']))
+{
+                if($_GET['notice']=="noreserv")
+                {
+             			$_POST=$_SESSION;
+             			echo "<div class=\"chyby\" id=\"pay\">Musite vybrat, alespon jeden let</div>";         	
+                }
+}
+                if(!empty($_POST))
+                { 
                   $link=getConnectDb();
                   $isCorrect=false; //promenna pro informaci vyhledavani v databazi
                   /*Pokud neni zadano misto odletu nebo priletu skonci s chybou*/
                   if((empty($_POST['odlet'])) && (empty($_POST['prilet'])))
                   {
                     echo "neni zadano misto odletu nebo priletu";
-                    header('location: login.php?notice=mistoOdletu');
+                   	header('location: login.php?notice=mistoOdletu');
                   }
 
                   elseif(!empty($_POST['odlet']))
@@ -135,7 +151,7 @@
                       /*Pokud bylo zadano pouze misto odletu*/
                       if(!empty($_POST['odlet']) && empty($_POST['prilet']) && empty($_POST['date']) && empty($_POST['date2']))
                       {
-                        $result=mysql_query("SELECT odkud, destinace, pocet_mist, datum_odletu, cas_odletu, cena, id_letenky FROM letenka WHERE odkud='$odkud' AND trida='$trida'", $link);
+                        $result=mysql_query("SELECT odkud, destinace, pocet_mist, datum_odletu, cas_odletu, spolecnost, cena, id_letenky FROM letenka WHERE odkud='$odkud' AND trida='$trida'", $link);
                          
                           $status=printTable($result);
                           
@@ -145,7 +161,7 @@
                       /*Pokud bylo zadano misto odletu a misto priletu*/
                       elseif(!empty($_POST['odlet']) && !empty($_POST['prilet']) && empty($_POST['date']) && empty($_POST['date2']))
                       {                     
-                        $result=mysql_query("SELECT odkud, destinace, pocet_mist, datum_odletu, cas_odletu, cena, id_letenky FROM letenka WHERE odkud='$odkud' AND destinace='$kam' AND trida='$trida'", $link);
+                        $result=mysql_query("SELECT odkud, destinace, pocet_mist, datum_odletu, cas_odletu, spolecnost, cena, id_letenky FROM letenka WHERE odkud='$odkud' AND destinace='$kam' AND trida='$trida'", $link);
 
                           $status=printTable($result);
                           
@@ -158,7 +174,7 @@
                       {
                         $dateOd=date("Y-m-d",strtotime($_POST['date']));
                         $datePri=date("Y-m-d",strtotime($_POST['date2']));
-                          $result=mysql_query("SELECT odkud, destinace, pocet_mist, datum_odletu, cas_odletu, cena, id_letenky FROM letenka WHERE odkud='$odkud' 
+                          $result=mysql_query("SELECT odkud, destinace, pocet_mist, datum_odletu, cas_odletu, spolecnost, cena, id_letenky FROM letenka WHERE odkud='$odkud' 
                                               AND destinace='$kam' AND trida='$trida' AND datum_odletu BETWEEN '$dateOd' AND '$datePri'  ", $link);
 
                           $status=printTable($result);
@@ -175,7 +191,7 @@
                           $datePri="2030-12-30";
                           $datePri=date("Y-m-d",strtotime($datePri));
                           
-                         $result=mysql_query("SELECT odkud, destinace, pocet_mist, datum_odletu, cas_odletu, cena, id_letenky FROM letenka WHERE odkud='$odkud' 
+                         $result=mysql_query("SELECT odkud, destinace, pocet_mist, datum_odletu, cas_odletu, spolecnost, cena, id_letenky FROM letenka WHERE odkud='$odkud' 
                                               AND destinace='$kam' AND trida='$trida' AND datum_odletu BETWEEN '$dateOd' AND '$datePri'  ", $link);
                           $status=printTable($result);
 
@@ -186,8 +202,15 @@
                  }
 
                  else{
-                  header('location: login.php?notice="necojinak"');
+                  header('location: login.php?notice=necojinak');
                  }
+                 	
+                 	$_SESSION['odlet']=$_POST['odlet'];
+                 	$_SESSION['prilet']=$_POST['prilet'];
+                 	$_SESSION['date']=$_POST['date'];
+                 	$_SESSION['date2']=$_POST['date2'];
+                 	$_SESSION['hledej']=$_POST['hledej'];
+                 
                 }
 
                 else{
