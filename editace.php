@@ -4,13 +4,13 @@
 	/*Funkce pro pripojeni k databazi*/
 	function getConnectDb()
 	{
-			$link=mysql_connect("localhost:/var/run/mysql/mysql.sock", "xfilip34", "fojrum8a");
+			$link=mysql_connect("localhost:/var/run/mysql/mysql.sock", "root", "");
  			if(!$link)
  			{
  				echo "Chyba nepodarilo se spojit s databazi";
  				exit();
  			}
- 			$select=mysql_select_db("xfilip34", $link);
+ 			$select=mysql_select_db("rezervace_letenek", $link);
 			if(!$select)
 			{
 				echo "Nepodarilo se vybrat databazi";
@@ -21,7 +21,7 @@
 	if(!empty($_POST))
 	{
 		/*Pokud admin bude chtit upravovat*/
-		 if (isset($_POST['submit']) || isset($_POST['submitmuj']))
+		 if (isset($_POST['submit']) || isset($_POST['submitmuj']) || isset($_POST['submit_ucet']) )
 		 {
 		 		if(isset($_POST['submit']))
 		 		{
@@ -35,8 +35,21 @@
    					$submit_id = array_keys($_POST['submitmuj']);
    					$submit_id = $submit_id[0];
    				}
+
+   				if(isset($_POST['submit_ucet']))
+		 		{
+   					$submit_id = array_keys($_POST['submit_ucet']);
+   					$submit_id = $submit_id[0];
+   				}
 		
- 		$i=0; 		
+ 		$i=0; 	
+
+ 		foreach ($_POST['heslo'] as $key)
+ 			{		
+ 					$heslo[$i]=$key;
+ 					$i++;
+ 			}	
+ 		$i=0;
  		foreach ($_POST['jmeno'] as $key)
  			{		
  					$jmeno[$i]=$key;
@@ -66,8 +79,9 @@
  					$telefon[$i]=$key;
  					$i++;
  			}
+ 		
 
- 			if(isset($_POST['submit']))
+ 			if(isset($_POST['submit']) || isset($_POST['submit_ucet']) )
  		 	{
  		/*Zacatek Admin checkbox*/
  			$admin = $_POST['admin'];
@@ -97,12 +111,13 @@
  			
  			$link=getConnectDb();
 
- 			
+ 			mysql_query("UPDATE uzivatele SET heslo='$heslo[$submit_id]' WHERE login='$login[$submit_id]'", $link);	
 			mysql_query("UPDATE uzivatele SET jmeno='$jmeno[$submit_id]' WHERE login='$login[$submit_id]'", $link);
 			mysql_query("UPDATE uzivatele SET prijmeni='$prijmeni[$submit_id]' WHERE login='$login[$submit_id]'", $link);
 			mysql_query("UPDATE uzivatele SET adresa='$adresa[$submit_id]' WHERE login='$login[$submit_id]'", $link);
 			mysql_query("UPDATE uzivatele SET email='$email[$submit_id]' WHERE login='$login[$submit_id]'", $link);
-			mysql_query("UPDATE uzivatele SET telefon='$telefon[$submit_id]' WHERE login='$login[$submit_id]'", $link);			
+			mysql_query("UPDATE uzivatele SET telefon='$telefon[$submit_id]' WHERE login='$login[$submit_id]'", $link);
+
 			
 			if(isset($_POST['submit']))
 				mysql_query("UPDATE uzivatele SET is_admin='$admin[$submit_id]' WHERE login='$login[$submit_id]'", $link);						
@@ -115,6 +130,11 @@
 			if(isset($_POST['submitmuj']))
  		 	{
 				header('location: mujucet.php?stav=Upraveno!');
+			}
+
+			if(isset($_POST['submit_ucet']))
+ 		 	{
+				header('location: admin.php?stav2=Upraveno!');
 			}
 		}
 		/*Konec upravovani*/
