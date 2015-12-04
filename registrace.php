@@ -7,6 +7,17 @@
 	$uspech=true; //Pozadavky pro registraci
  if(!empty($_POST))
  {
+
+  if(isset($_POST['jmeno']))
+    $tj=$_POST['jmeno'];
+  if(isset($_POST['prijmeni']))
+    $tp=$_POST['prijmeni'];
+  if(isset($_POST['add']))
+    $ta=$_POST['add'];
+  if(isset($_POST['mail']))
+    $tm=$_POST['mail'];
+  if(isset($_POST['tel']))
+    $tt=$_POST['tel'];
 	foreach ($_POST as $argument) 
 	{
 		if(empty($argument))
@@ -17,7 +28,8 @@
 	}
 	if($empty)
 	{	
-		header("location: registrace.php?info=Vyplňte prosím všechny údaje !!!");
+    
+		header("location: registrace.php?info=vpvu&tjv=$tj&tpv=$tp&tav=$ta&tmv=$tm&ttv=$tt");
 		$uspech=false;
 	}
 	else{
@@ -33,7 +45,7 @@
 			
 			if($login==$_POST["mail"] && $uspech)
 			{
-				header("location: registrace.php?info=tento login nebo E-mail již existuje !!!");
+				header("location: registrace.php?info=teje&tjv=$tj&tpv=$tp&tav=$ta&tmv=$tm&ttv=$tt");
 				$uspech=false;
 			}
 		}
@@ -42,13 +54,13 @@
 		/*Kontrola hesla*/
 		if($_POST["pass_reg"]!=$_POST["pass_reg2"] && $uspech)
 		{
-			header("location: registrace.php?info=hesla se neshodují !!!");
+			header("location: registrace.php?info=hsn&tjv=$tj&tpv=$tp&tav=$ta&tmv=$tm&ttv=$tt");
 			$uspech=false;
 		}
 		/*delka hesla, alespon 8 znaku*/
 		else if((strlen($_POST["pass_reg"])<=8) && $uspech)
 		{
-			header("location: registrace.php?info=Heslo je příliš krátké, musí obsahovat alespoň 8 znaků !!!");
+			header("location: registrace.php?info=hjpk&tjv=$tj&tpv=$tp&tav=$ta&tmv=$tm&ttv=$tt");
 			$uspech=false;
 		}
 		/*Pokud vsechny udaje byly spravne, uloz do databaze*/
@@ -123,11 +135,11 @@
                         {
                           echo "Jste přihlášen jako ". htmlspecialchars($_SESSION['username']);
              
-			if(isset($_SESSION['admin']))
-			{ 
-                          if($_SESSION['admin'])
+                			if(isset($_SESSION['admin']))
+			                 {  
+                           if($_SESSION['admin'])
                              echo ' admin';         
-			}
+			                 }
                           echo "<br>";
                           echo "<a href=\"login.php?odhlasit\">Odhlásit</a>";
                         }
@@ -142,21 +154,42 @@
             </div>
             <div id="jmeno_prij">
                 
-                <form method="post">
-                <input id="jmeno" name="jmeno" placeholder="Jméno" type="text">
-                <input id="prijmeni" name="prijmeni" placeholder="Příjmení" type="text">
-                 <input id="add" name="add" placeholder="Adresa" type="text">
-                 <input id="tel" name="tel" placeholder="Telefon" type="text">
+                <?php
+		if(isset($_GET['tjv'])) 
+		{	
+                  $tjv=$_GET['tjv'];			
+                  $tjv=urldecode($tjv);
+		}
+		if(isset($_GET['tav']))
+		{
+                  $tav=$_GET['tav'];
+                  $tav=urldecode($tav);
+		}
+		if(isset($_GET['ttv']))
+		{
+                  $ttv=$_GET['ttv'];
+                  $ttv=urldecode($ttv);
+		}
+		if(isset($_GET['tpv']))
+		{
+                  $tpv=$_GET['tpv'];
+                  $tpv=urldecode($tpv);
+		}
+                  echo "
+                <form method=\"post\">
+                <input id=\"jmeno\" name=\"jmeno\" placeholder=\"Jméno\" type=\"text\" value=\"isset($tjv) ? $tjv : ' ' \"/>
+                <input id=\"prijmeni\" name=\"prijmeni\" placeholder=\"Příjmení\" type=\"text\" value=\"isset($tpv) ? $tpv : ' '\" >
+                 <input id=\"add\" name=\"add\" placeholder=\"Adresa\" type=\"text\" value=\"isset($tav) ? $tpv : ' '\" >
+                 <input id=\"tel\" name=\"tel\" placeholder=\"Telefon\" type=\"text\" value=\"isset($ttv) ? $tpv : ' '\" >
 
-                <input id="mail" name="mail" placeholder="E-mail" type="text">
+                <input id=\"mail\" name=\"mail\" placeholder=\"E-mail\" type=\"text\" value=\"isset($tmv) ? $tmv : ' '\" >
             </div>
-            <div id="jmeno_prij">
-                <input id="pass_reg" name="pass_reg" placeholder="Heslo" type="password">
-                <input id="pass_reg2" name="pass_reg2" placeholder="Kontrla hesla" type="password">
-
-
-                <input name="submit_reg" type="submit" value=" Registrovat ">
-            
+            <div id=\"jmeno_prij\">
+                <input id=\"pass_reg\" name=\"pass_reg\" placeholder=\"Heslo\" type=\"password\">
+                <input id=\"pass_reg2\" name=\"pass_reg2\" placeholder=\"Kontrla hesla\" type=\"password\">
+                <input name=\"submit_reg\" type=\"submit\" value=\" Registrovat \">
+                ";
+            ?>
             	 <?php 
             	 	/*Vysledek registrace, popripade chyba*/
 		      if(isset($_GET['info']))
@@ -166,9 +199,17 @@
             	 		echo "<h3 style=\"color: green; font-weight: bold;\">".$_GET['info']."</h3>";
             	 		echo "<a href=\"index.php\" style=\"font-size: 20px; color: blue;\">Přejít na hlavní stránku</a>";
             	  	}
-            	 	else		            	 			
-            	 		echo "<h3 style=\"color: red; font-weight: bold;\">".$_GET['info']."</h3>";
-		      }
+            	 	else		           
+                  if($_GET['info']=="vpvu")
+            	 		  echo "<h3 style=\"color: red; font-weight: bold;\">Vyplnte prosim vsechny udaje</h3>";
+                  elseif($_GET['info']=="teje")
+                    echo "<h3 style=\"color: red; font-weight: bold;\">tento login nebo E-mail již existuje !!!</h3>";
+		              elseif($_GET['info']=="hsn")
+                    echo "<h3 style=\"color: red; font-weight: bold;\">hesla se neshodují</h3>";
+                  elseif($_GET['info']=="hjpk")
+                    echo "<h3 style=\"color: red; font-weight: bold;\">Heslo je příliš krátké, musí obsahovat alespoň 8 znaků !!!</h3>";
+
+          }
                 ?>
             </div>
             </div>
