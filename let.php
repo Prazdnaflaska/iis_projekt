@@ -22,6 +22,25 @@
     exit();
   }
 
+/*Pro pamatovani udaju pri spatne vyplnenem formu*/
+    if(isset($_POST['odlet']))
+    	$tod=$_POST['odlet'];
+  	if(isset($_POST['prilet']))
+	    $tpr=$_POST['prilet'];
+  	if(isset($_POST['kapacita']))
+	    $tka=$_POST['kapacita'];
+  	if(isset($_POST['spolecnost']))
+	    $tsp=$_POST['spolecnost'];  	
+	if(isset($_POST['cas_odl']))
+	    $tco=$_POST['cas_odl'];
+	if(isset($_POST['cas_pril']))
+	    $tcp=$_POST['cas_pril'];
+	if(isset($_POST['cena']))
+	    $tce=$_POST['cena'];
+	if(isset($_POST['trida']))
+	    $ttr=$_POST['trida'];
+
+  /******************************************/
   if(isset($_POST['hledej']))
   {
     $i=0;
@@ -35,7 +54,7 @@
     
     if($i!=10)
     {
-      header('location: let.php?info=empty');
+      header("location: let.php?info=empty&todv=$tod&tprv=$tpr&tkav=$tka&tspv=$tsp&tcov=$tco&tcpv=$tcp&tcev=$tce&ttrv=$ttr");
       exit(1);
     }
 
@@ -46,7 +65,7 @@
     if(is_numeric($_POST['kapacita']))
         $pocet_mist=$_POST['kapacita'];
     else{
-        header('location: let.php?info=kapcislo');
+        header("location: let.php?info=kapcislo&todv=$tod&tprv=$tpr&tkav=$tka&tspv=$tsp&tcov=$tco&tcpv=$tcp&tcev=$tce&ttrv=$ttr");
         exit(1);
       }
 
@@ -54,7 +73,7 @@
     $trida=$_POST['trida'];
      if($trida!="first" && $trida!="economy" && $trida!="business")
      {
-        header('location: let.php?info=badtrida');
+        header("location: let.php?info=badtrida&todv=$tod&tprv=$tpr&tkav=$tka&tspv=$tsp&tcov=$tco&tcpv=$tcp&tcev=$tce&ttrv=$ttr");
         exit(1);
      } 
 
@@ -66,7 +85,7 @@
     if(is_numeric($_POST['cena']))
        $cena=$_POST['cena'];
     else{
-        header('location: let.php?info=cenacislo');
+        header("location: let.php?info=cenacislo&todv=$tod&tprv=$tpr&tkav=$tka&tspv=$tsp&tcov=$tco&tcpv=$tcp&tcev=$tce&ttrv=$ttr");
         exit(1);
       }
     
@@ -80,7 +99,7 @@
       exit(1);
     }
 
-    header('location: let.php?info=error');
+    header("location: let.php?info=error&todv=$tod&tprv=$tpr&tkav=$tka&tspv=$tsp&tcov=$tco&tcpv=$tcp&tcev=$tce&ttrv=$ttr");
     exit(1);
     
   }
@@ -143,35 +162,103 @@
             <div id="login">
               <h2>Vytvoření letu</h2>
             </div>
-              <form action="let.php" method="post">
+            <?php  
+            	   if(isset($_GET['todv'])) 
+                 {
+                  $todv=$_GET['todv'];
+                  $todv=urldecode($todv);
+                 }
+                 if(isset($_GET['tprv'])) 
+                 {
+                  $tprv=$_GET['tprv'];
+                  $tprv=urldecode($tprv);
+                 }
+                 if(isset($_GET['tkav'])) 
+                 {
+                  $tkav=$_GET['tkav'];
+                  $tkav=urldecode($tkav);
+                 }
+                 if(isset($_GET['tspv'])) 
+                 {
+                  $tspv=$_GET['tspv'];
+                  $tspv=urldecode($tspv);
+                 }
+                 if(isset($_GET['tcov'])) 
+                 {
+                  $tcov=$_GET['tcov'];
+                  $tcov=urldecode($tcov);
+                 }
+                 if(isset($_GET['tcpv'])) 
+                 {
+                  $tcpv=$_GET['tcpv'];
+                  $tcpv=urldecode($tcpv);
+                 }
+                 if(isset($_GET['tcev'])) 
+                 {
+                  $tcev=$_GET['tcev'];
+                  $tcev=urldecode($tcev);
+                 }
+                 if(isset($_GET['ttrv'])) 
+                 {
+                  $ttrv=$_GET['ttrv'];
+                  $ttrv=urldecode($ttrv);
+                 }
+            	
+            	echo "<form action=\"let.php\" method=\"post\">
             
-                <div id="typLetenky">
+                <div id=\"typLetenky\">
                   <label>Odlet z</label>
-                  <input id="letenka" name="odlet" type="text"><br>
-                  <label>Přílet do</label>
-                  <input id="letenka" name="prilet" type="text"><br>
-                  <label>Kapacita</label>
-                  <input id="kapacita" name="kapacita" type="text"><br>
-                  <label>Společnost</label>
-                  <input id="spolecnost" name="spolecnost" type="text"><br>
-                  <label>Datum</label>
-                  <input id="datepicker" name="date" placeholder="Datum odletu" type="text">
+                  ";
+                  if(isset($todv)) 
+                    echo "<input id=\"letenka\" name=\"odlet\" type=\"text\" value=\"$todv\"><br>";
+                  else
+                    echo "<input id=\"letenka\" name=\"odlet\" type=\"text\"><br>";
+                  echo "<label>Přílet do</label>";
+                  if(isset($tprv)) 
+                    echo "<input id=\"letenka\" name=\"prilet\" type=\"text\" value=\"$tprv\"><br>";
+                  else
+                    echo "<input id=\"letenka\" name=\"prilet\" type=\"text\"><br>";
+                  echo "<label>Kapacita</label>";
+                  if(isset($tkav)) 
+                    echo "<input id=\"kapacita\" name=\"kapacita\" type=\"text\" value=\"$tkav\"><br>";
+                  else
+                    echo "<input id=\"kapacita\" name=\"kapacita\" type=\"text\"><br>";
+                  echo "<label>Společnost</label>";
+                  if(isset($tspv)) 
+                    echo "<input id=\"spolecnost\" name=\"spolecnost\" type=\"text\" value=\"$tspv\"><br>";
+                  else
+                    echo "<input id=\"spolecnost\" name=\"spolecnost\" type=\"text\"><br>";
+                  echo "<label>Datum</label>";
+                  echo "<input id=\"datepicker\" name=\"date\" placeholder=\"Datum odletu\" type=\"text\">
                   <br>
-                  <label>Čas odletu</label>
-                  <input id="datepicker" name="cas_odl" type="text">
-                  <label>Čas příletu</label>
-                  <input id="datepicker" name="cas_pril" type="text">
-                  <label>Cena</label>
-                  <input id="datepicker" name="cena" type="text">
-                  <label>Třída</label>
-                  <input id="datepicker" name="trida" type="text">
-                 
+                  <label>Čas odletu</label>";
+                  if(isset($tcov)) 
+                    echo "<input id=\"datepicker\" name=\"cas_odl\" type=\"text\" value=\"$tcov\">";
+                  else
+                    echo "<input id=\"datepicker\" name=\"cas_odl\" type=\"text\">";
+                  echo "<label>Čas příletu</label>";
+                  if(isset($tcpv)) 
+                    echo "<input id=\"datepicker\" name=\"cas_pril\" type=\"text\" value=\"$tcpv\">";
+                  else
+                    echo "<input id=\"datepicker\" name=\"cas_pril\" type=\"text\">";
+                  echo "<label>Cena</label>";
+                  if(isset($tcev)) 
+                    echo "<input id=\"datepicker\" name=\"cena\" type=\"text\" value=\"$tcev\">";
+                  else
+                    echo "<input id=\"datepicker\" name=\"cena\" type=\"text\">";
+                  echo "<label>Třída</label>";
+                  if(isset($ttrv)) 
+                    echo "<input id=\"datepicker\" name=\"trida\" type=\"text\" value=\"$ttrv\">";
+                  else
+                    echo "<input id=\"datepicker\" name=\"trida\" type=\"text\">";
+                 echo "
                   </div>
-                  <div id="typLetenky">
+                  <div id=\"typLetenky\">
                    
-                    <input name="hledej" type="submit" value="Vytvořit">
+                    <input name=\"hledej\" type=\"submit\" value=\"Vytvořit\">
 
-                </div>
+                </div>";
+                ?>
                 <?php
                   if(isset($_GET['info']))
                   {
