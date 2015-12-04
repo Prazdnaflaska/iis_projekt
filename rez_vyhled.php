@@ -1,7 +1,6 @@
 <?php
  ini_set("default_charset", "UTF-8");
   session_start();
-
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +18,6 @@
   			$(function() {
     			$( "#datepicker2" ).datepicker();
   			});
-
   			$(function() {
     			$( "#datepicker" ).datepicker();
   			});
@@ -85,8 +83,8 @@
                 <td></td>
               </tr>
                 <?php 
+        
                 require_once("editace.php");
-
                function printTable($result)
                {
                 $checkArray= array();
@@ -107,26 +105,19 @@
                             echo "<input name=\"id_let[$y]\" value=\"$row[7]\" type=\"hidden\">";
                             echo "</tr>\n";
                             $y++;
-
                 }
-
                           return $isCorrect;
                }
 
-                if(empty($_SESSION['username']))
-                {
-                  header('location: index.php?notice=nologin');
-                  exit(1);
-                }
 
 	     if(isset($_GET['notice']))
-{
+        {
                 if($_GET['notice']=="noreserv")
                 {
              			$_POST=$_SESSION;
              			echo "<div class=\"chyby\" id=\"pay\">Musite vybrat, alespon jeden let</div>";         	
                 }
-}
+        }
                 if(!empty($_POST))
                 { 
                   $link=getConnectDb();
@@ -135,14 +126,16 @@
                   if((empty($_POST['odlet'])) && (empty($_POST['prilet'])))
                   {
                     echo "neni zadano misto odletu nebo priletu";
-                   	header('location: login.php?notice=mistoOdletu');
-                  }
 
+                    if(isset($_SESSION['username']))
+                   	  header('location: login.php?notice=mistoOdletu');
+                    else
+                      header('location: index.php?notice=mistoOdletu');
+                  }
                   elseif(!empty($_POST['odlet']))
                   {
                     $odkud=$_POST['odlet'];
                     $kam=$_POST['prilet'];
-
                    if (isset($_POST['class']))   // if ANY of the options was checked
                       $trida=$_POST['class'];    // echo the choice
                   else
@@ -156,19 +149,27 @@
                           $status=printTable($result);
                           
                           if(!$status)
-                            header('location: login.php?notice=neplaModl'); 
+                          {
+                             if(isset($_SESSION['username']))  
+                                header('location: login.php?notice=neplaModl'); 
+                              else
+                                header('location: index.php?notice=neplaModl'); 
+                          }   
                       }
                       /*Pokud bylo zadano misto odletu a misto priletu*/
                       elseif(!empty($_POST['odlet']) && !empty($_POST['prilet']) && empty($_POST['date']) && empty($_POST['date2']))
                       {                     
                         $result=mysql_query("SELECT odkud, destinace, pocet_mist, datum_odletu, cas_odletu, spolecnost, cena, id_letenky FROM letenka WHERE odkud='$odkud' AND destinace='$kam' AND trida='$trida'", $link);
-
                           $status=printTable($result);
                           
                           if(!$status)
-                            header('location: login.php?notice=neplaDest'); 
+                          {
+                            if(isset($_SESSION['username']))  
+                              header('location: login.php?notice=neplaDest'); 
+                            else
+                              header('location: index.php?notice=neplaDest'); 
+                          }
                       }
-
                         /*Pokud uzivatel zadal misto odletu, misto priletu a datumy*/
                       elseif(!empty($_POST['odlet']) && !empty($_POST['prilet']) && !empty($_POST['date']) && !empty($_POST['date2']))
                       {
@@ -176,17 +177,18 @@
                         $datePri=date("Y-m-d",strtotime($_POST['date2']));
                           $result=mysql_query("SELECT odkud, destinace, pocet_mist, datum_odletu, cas_odletu, spolecnost, cena, id_letenky FROM letenka WHERE odkud='$odkud' 
                                               AND destinace='$kam' AND trida='$trida' AND datum_odletu BETWEEN '$dateOd' AND '$datePri'  ", $link);
-
                           $status=printTable($result);
-
                           if(!$status)
-                            header('location: login.php?notice=dateNon');
+                          {
+                            if(isset($_SESSION['username']))  
+                              header('location: login.php?notice=dateNon');
+                            else
+                              header('location: index.php?notice=dateNon');
+                          }
                       }
-
                        /*Pokud uzivatel vyplnil jen jedno datum, jinak vse*/ 
                       else
                       {
-
                           $dateOd=date("Y-m-d",strtotime($_POST['date']));
                           $datePri="2030-12-30";
                           $datePri=date("Y-m-d",strtotime($datePri));
@@ -194,15 +196,20 @@
                          $result=mysql_query("SELECT odkud, destinace, pocet_mist, datum_odletu, cas_odletu, spolecnost, cena, id_letenky FROM letenka WHERE odkud='$odkud' 
                                               AND destinace='$kam' AND trida='$trida' AND datum_odletu BETWEEN '$dateOd' AND '$datePri'  ", $link);
                           $status=printTable($result);
-
                           if(!$status)
-                            header('location: login.php?notice=dateNon');
-
+                          {
+                            if(isset($_SESSION['username']))  
+                              header('location: login.php?notice=dateNon');
+                            else
+                              header('location: index.php?notice=dateNon');
+                          }
                       }
                  }
-
                  else{
-                  header('location: login.php?notice=necojinak');
+                  if(isset($_SESSION['username']))  
+                    header('location: login.php?notice=necojinak');
+                  else
+                    header('location: index.php?notice=necojinak');
                  }
                  	
                  	$_SESSION['odlet']=$_POST['odlet'];
@@ -212,7 +219,6 @@
                  	$_SESSION['hledej']=$_POST['hledej'];
                  
                 }
-
                 else{
                   exit(1);
                 }
