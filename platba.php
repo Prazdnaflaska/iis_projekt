@@ -22,7 +22,6 @@
           
       if(isset($_POST['id_let']))
       {
-        
         $link=getConnectDB();
         $user=$_SESSION['username'];
         $result=mysql_query("SELECT id_cestujici FROM uzivatele WHERE login='$user'", $link);
@@ -38,8 +37,8 @@
             
         }
        
-        header('location: platba.php?transaction=1');
-    	exit();
+      		  header('location: platba.php?transaction=1');
+    		exit();
       }
 
     }
@@ -131,7 +130,7 @@
                       echo "</tr>";
                   if(!empty($_POST))
                   {
-
+                  		
                   	if(!isset($_POST['rezervuj']))
                   	{
                   		header('location: rez_vyhled.php?notice=noreserv');
@@ -184,12 +183,14 @@
               
               <form method="post">
               <?php
+              			 
                    if(isset($pocet_letenek))
 		              {	 
                     for ($k=0; $k < $pocet_letenek; $k++) 
                     { 
-                        echo "<input type=\"hidden\" id=\"id_let[$k]\" name=\"id_let[$k]\" >";
+                        echo "<input type=\"hidden\" id=\"id_let[$k]\" name=\"id_let[$k]\" value=\"$id_pole[$k]\">";
                     } 
+                    	
                    }     
               
               ?>
@@ -197,6 +198,7 @@
                   <input id="plat" name="platba_text" type="text" placeholder="Číslo účtu">
                   <input value="Zaplatit" name="submit_platba" type="submit">
                     <input value="Zrušit" name="cancel" type="button" onclick="location.href='index.php'">
+                    </form>
                     <?php
                     
                     if(!empty($_GET['transaction']))
