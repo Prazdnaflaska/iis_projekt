@@ -4,7 +4,7 @@
 	/*Funkce pro pripojeni k databazi*/
 	function getConnectDb()
 	{
-			$link=mysql_connect("localhost:/var/run/mysql/mysql.sock", "root", "");
+			$link=mysql_connect("127.0.0.1", "root", "decathlon");
  			if(!$link)
  			{
  				echo "Chyba nepodarilo se spojit s databazi";
