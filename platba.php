@@ -7,7 +7,7 @@
   {
     if(isset($_POST['platba_text']))
     {
-      if(!is_numeric($_POST['platba_text']))
+      if(!ereg("^[0-9]+/[0-9]+$", $_POST['platba_text']))
       {
         header('location: platba.php?transaction=neplatucet');
         exit(1); 
@@ -42,7 +42,6 @@
       }
 
     }
-
 
     else{
       echo "zadejte cislo uctu";
@@ -83,7 +82,7 @@
             <?php
         
     
-                  if($_SESSION['admin'])
+                  if(isset($_SESSION['admin']))
                       echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
                   else if(isset($_SESSION['username']))
                       echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
@@ -187,7 +186,8 @@
                    if(isset($pocet_letenek))
 		              {	 
                     for ($k=0; $k < $pocet_letenek; $k++) 
-                    { 
+                    {
+			if(isset($id_pole)) 
                         echo "<input type=\"hidden\" id=\"id_let[$k]\" name=\"id_let[$k]\" value=\"$id_pole[$k]\">";
                     } 
                     	
