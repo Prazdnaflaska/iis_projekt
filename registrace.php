@@ -175,20 +175,35 @@
                   $tpv=$_GET['tpv'];
                   $tpv=urldecode($tpv);
 		}
-                  echo "
-                <form method=\"post\">
-                <input id=\"jmeno\" name=\"jmeno\" placeholder=\"Jméno\" type=\"text\" value=\"isset($tjv) ? $tjv : ' ' \"/>
-                <input id=\"prijmeni\" name=\"prijmeni\" placeholder=\"Příjmení\" type=\"text\" value=\"isset($tpv) ? $tpv : ' '\" >
-                 <input id=\"add\" name=\"add\" placeholder=\"Adresa\" type=\"text\" value=\"isset($tav) ? $tpv : ' '\" >
-                 <input id=\"tel\" name=\"tel\" placeholder=\"Telefon\" type=\"text\" value=\"isset($ttv) ? $tpv : ' '\" >
-
-                <input id=\"mail\" name=\"mail\" placeholder=\"E-mail\" type=\"text\" value=\"isset($tmv) ? $tmv : ' '\" >
-            </div>
+                  
+                echo "<form method=\"post\"> ";
+                if(isset($tjv))
+                  echo "<input id=\"jmeno\" name=\"jmeno\" placeholder=\"Jméno\" type=\"text\" value=\"$tjv\"/>";
+                else 
+                  echo "<input id=\"jmeno\" name=\"jmeno\" placeholder=\"Jméno\" type=\"text\"/>";
+                if(isset($tpv))
+                  echo "<input id=\"prijmeni\" name=\"prijmeni\" placeholder=\"Příjmení\" type=\"text\" value=\"$tpv\" >";
+                else
+                  echo "<input id=\"prijmeni\" name=\"prijmeni\" placeholder=\"Příjmení\" type=\"text\">";
+                if(isset($tav))
+                 echo "<input id=\"add\" name=\"add\" placeholder=\"Adresa\" type=\"text\" value=\"$tpv\" >";
+                else
+                   echo "<input id=\"add\" name=\"add\" placeholder=\"Adresa\" type=\"text\">";
+                if(isset($tpv))    
+                   echo "<input id=\"tel\" name=\"tel\" placeholder=\"Telefon\" type=\"text\" value=\"$ttv\" >";
+                else
+                  echo "<input id=\"tel\" name=\"tel\" placeholder=\"Telefon\" type=\"text\" >";
+                if(isset($tmv))
+                  echo "<input id=\"mail\" name=\"mail\" placeholder=\"E-mail\" type=\"text\" value=\"$tmv\" >";
+                else
+                  echo "<input id=\"mail\" name=\"mail\" placeholder=\"E-mail\" type=\"text\" >";
+            echo "
+             </div>
             <div id=\"jmeno_prij\">
-                <input id=\"pass_reg\" name=\"pass_reg\" placeholder=\"Heslo\" type=\"password\">
-                <input id=\"pass_reg2\" name=\"pass_reg2\" placeholder=\"Kontrla hesla\" type=\"password\">
+                <input id=\"pass_reg\" name=\"pass_reg\" placeholder=\"Heslo (minimálně 8 znaků)\" type=\"password\">
+                <input id=\"pass_reg2\" name=\"pass_reg2\" placeholder=\"Kontrola hesla\" type=\"password\">
                 <input name=\"submit_reg\" type=\"submit\" value=\" Registrovat \">
-                ";
+               ";
             ?>
             	 <?php 
             	 	/*Vysledek registrace, popripade chyba*/
