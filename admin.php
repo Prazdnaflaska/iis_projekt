@@ -41,7 +41,7 @@
   }
   if(isset($_GET['admin']))
   {
-  		$_SESSION['admin']=true;
+  	$_SESSION['admin']=true;
   }
   if(isset($_GET['odhlasit']))
   {
@@ -207,9 +207,9 @@
        					<td>Adresa</td>
        					<td>E-mail</td>
        					<td>Telefon</td>
+                <td>Heslo</td>
        					<td>Admin</td>
-       					<td></td>
-       					<td></td>
+       					<td></td>   
                 <td></td>
 
        				</tr>
@@ -219,17 +219,19 @@
                 	require_once("editace.php");
                 	$link=getConnectDb();
                
-             	 $result=mysql_query("SELECT jmeno, prijmeni, adresa, email, telefon, login, is_admin FROM uzivatele");
+             	 $result=mysql_query("SELECT jmeno, prijmeni, adresa, email, telefon, login, is_admin, heslo FROM uzivatele");
 					$x=0;
 					$y=0;
 					while($row = mysql_fetch_row($result))
 					{
 						echo "<tr>";
-						echo "<td><input name=\"jmeno[$y]\" type=\"text\" class=\"adminace\" value=\"$row[0]\"></td>";
+						echo "<td><input name=\"jmeno[$y]\" type=\"text\" class=\"adminacejmeno\" value=\"$row[0]\"></td>";
     					echo "<td><input name=\"prijmeni[$y]\"type=\"text\" class=\"adminace\" value=\"$row[1]\"></td>";
     					echo "<td><input name=\"adresa[$y]\" type=\"text\" class=\"adminace\" value=\"$row[2]\"> </td>";
     					echo "<td><input name=\"email[$y]\" type=\"text\" class=\"adminace\" value=\"$row[3]\"></td>";
     					echo "<td><input name=\"telefon[$y]\" type=\"text\" class=\"adminace\" value=\"$row[4]\"> </td>";
+              echo "<td><input name=\"heslo[$y]\" type=\"text\" class=\"adminace\" value=\"$row[7]\"> </td>";
+
 						/*checkbox zaskrtavani*/
 						if($row[6])
 						{
@@ -240,9 +242,9 @@
     						echo "<td><input name=\"admin[$y]\" type=\"checkbox\" value=\"$row[6]\">admin</td>";	
     					}
 
-    					echo "<td><input name=\"login[$y]\" type=\"hidden\" class=\"adminace\" value=\"$row[5]\"> </td>";
-    					echo "<td><input type=\"submit\" value=\"Upravit\" class=\"adminace\" name=\"submit[$x]\"></td>";
-    					echo "<td><input type=\"submit\" value=\"Odstranit\" class=\"adminace\" name=\"delete[$x]\"></td><br>";
+    					echo "<input name=\"login[$y]\" type=\"hidden\" class=\"adminace\" value=\"$row[5]\">";
+    					echo "<td><input type=\"submit\" value=\"Upravit\" class=\"adminacetl\" name=\"submit[$x]\"></td>";
+    					echo "<td><input type=\"submit\" value=\"Odstranit\" class=\"adminacetl\" name=\"delete[$x]\"></td><br>";
     					echo "</tr>\n";
     					$x++;
     					$y++;	
