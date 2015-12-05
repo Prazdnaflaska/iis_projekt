@@ -36,7 +36,7 @@
          <?php
 	      
 		
-                	if($_SESSION['admin'])
+                	if(isset($_SESSION['admin']))
 	                    echo "<li id=\"admin\"><a href=\"admin.php\">Administrace</a></li>";
         	        else if(isset($_SESSION['username']))
                       echo "<li id=\"admin\"><a href=\"mujucet.php\">Můj účet</a></li>";
